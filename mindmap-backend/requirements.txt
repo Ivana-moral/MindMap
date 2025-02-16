@@ -4,3 +4,4 @@ python-dotenv
 databases
 aiomysql
 sqlalchemy
+firebase-admin
