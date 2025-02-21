@@ -1,0 +1,57 @@
+.loginFormContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.loginForm {
+    background-color: var(--foreground);
+    padding: 30px;
+    width: 100%;
+    max-width: 400px;
+    border-radius: 4px;
+    box-shadow: 10px 10px 15px rgba(255, 255, 255, 0.15);
+}
+
+.inputField {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0 20px;
+    border: 1px solid var(--background);
+    border-radius: 2px;
+    font-size: 16px;
+    box-sizing: border-box;
+    color: black;
+}
+
+.labelField {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: bold;
+    color: var(--text-color);
+}
+
+.buttonField {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--background);
+    color: var(--text-color);
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+
+}
+
+.signUp {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 16px;
+}
+
+.signUp .link {
+    color: rgb(255, 0, 0);
+    text-decoration: none;
+    font-weight: bold;
+    cursor: pointer;
+}
