@@ -1,0 +1,85 @@
+.accountContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.accountWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: var(--foreground);
+    padding: 30px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 10px 10px 15px rgba(255, 255, 255, 0.15);
+    border-radius: 4px;
+}
+
+.accountIcon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background-color: #ccc;
+    display: flex;
+    font-size: 32px;
+    color: white;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.divider {
+    width: 100%;
+    height: 2px;
+    background-color: #ccc;
+    margin: 10px auto;
+}
+
+.formGroup {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.label {
+    font-size: 14px;
+    font-weight: bold;
+    color: var(--text-color);
+}
+
+.input {
+    width: 100%;
+    padding: 12px;
+    margin-top: 6px;
+    border: 1px solid var(--foreground);
+    border-radius: 6px;
+    font-size: 16px;
+    color: black;
+}
+
+.text {
+    font-size: 16px;
+    color: black;
+}
+
+.buttonContainer {
+    margin-top: 20px;
+}
+
+.submitBtn {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--background);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.submitBtn:hover {
+    background-color: #ff0000;
+}
