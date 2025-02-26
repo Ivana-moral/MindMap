@@ -1,0 +1,21 @@
+.lessonPageContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #000;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+.lessonTitle {
+    font-size: 32px;
+    margin-bottom: 20px;
+}
+
+.lessonContent {
+    font-size: 18px;
+    color: #bbb;
+}
