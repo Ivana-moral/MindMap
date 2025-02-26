@@ -1,21 +1,48 @@
 .lessonPageContainer {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    background-color: #000;
+    align-items: center; 
+    justify-content: flex-start; 
+    background-color: black;
+    min-height: 100vh;
+    width: 100%;
     color: white;
     padding: 20px;
     text-align: center;
+    padding-top: 40px; 
 }
 
 .lessonTitle {
     font-size: 32px;
-    margin-bottom: 20px;
+    font-weight: bold;
+    color: #66ff00;
+    margin-bottom: 10px; 
 }
 
-.lessonContent {
+.buttonContainer {
+    display: flex;
+    flex-direction: column; 
+    align-items: center;
+    width: 100%;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.lessonButton {
+    width: 80%;
+    max-width: 300px;
+    padding: 12px 20px;
+    background-color: #444;
+    color: white;
+    border: none;
+    border-radius: 8px;
     font-size: 18px;
-    color: #bbb;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    text-align: center;
+}
+
+.lessonButton:hover {
+    background-color: #666;
+    transform: scale(1.05);
 }
