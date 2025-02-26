@@ -36,17 +36,6 @@ export default function LessonExplorer() {
 
                 {/* Main Content */}
                 <div className={styles.container}>
-                    {/* Sidebar - Timeline */}
-                    <aside className={styles.sidebar}>
-                        <div className={styles.timeline}>
-                            {lessons.map((lesson, index) => (
-                                <div key={lesson.id}>
-                                    <div className={`${styles.circle} ${index === 0 ? styles.green : styles.red}`}></div>
-                                    {index < lessons.length - 1 && <div className={styles.line}></div>}
-                                </div>
-                            ))}
-                        </div>
-                    </aside>
 
                     {/* Lessons Section */}
                     <section className={styles.lessons}>
