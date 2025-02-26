@@ -1,0 +1,157 @@
+/* GENERAL STYLES */
+
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #000;
+    color: white;
+}
+
+/* LESSON CONTAINER */
+.lessonContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* WRAPPER */
+.lessonWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 800px;
+}
+
+/* HEADER */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    width: 100%;
+    background-color: #222;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+/* PROFILE ICON (Make Clickable) */
+.profileIcon {
+    font-size: 24px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.profileIcon:hover {
+    transform: scale(1.1); /* Slight zoom effect */
+}
+
+/* CONTAINER HOLDS SIDEBAR + LESSONS */
+.container {
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
+/* SIDEBAR (TIMELINE) */
+.sidebar {
+    width: 80px;
+    display: flex;
+    justify-content: center;
+    padding-top: 20px;
+    background-color: #111;
+}
+
+/* TIMELINE STRUCTURE */
+.timeline {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.circle {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: gray;
+}
+
+.green {
+    background-color: #66ff00;
+}
+
+.red {
+    background-color: #d9534f;
+}
+
+/* LINE BETWEEN CIRCLES */
+.line {
+    width: 4px;
+    height: 40px;
+    background-color: gray;
+}
+
+/* LESSONS SECTION */
+.lessons {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+/* LESSON CARD CONTAINERS */
+.lessonCard {
+    background-color: #222;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    border: 2px solid #555;
+    transition: background-color 0.3s ease, max-height 0.3s ease-in-out;
+    min-height: 60px;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    cursor: pointer;
+}
+
+/* Expanded Lesson Card */
+.lessonCard.expanded {
+    background-color: #333;
+    min-height: 100px;
+}
+
+/* TEXT INSIDE LESSON CARD */
+.lessonCard h3 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+/* LESSON OVERVIEW TEXT */
+.lessonOverview {
+    font-size: 16px;
+    margin-top: 10px;
+    color: #bbb;
+    max-height: 100px;
+    transition: max-height 0.3s ease-in-out;
+}
+
+/* TOGGLE ARROWS */
+.toggleArrow {
+    font-size: 22px;
+    margin-right: 15px;
+    color: #66ff00;
+}
+
+/* LESSON HEADER */
+.lessonHeader {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
