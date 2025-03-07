@@ -9,11 +9,11 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: var(--foreground);
+    background-color: var(--secondary);
     padding: 30px;
     width: 100%;
     max-width: 400px;
-    box-shadow: 10px 10px 15px rgba(255, 255, 255, 0.15);
+	box-shadow: 5px 5px 10px var(--accent);
     border-radius: 4px;
 }
 
@@ -47,39 +47,25 @@
 .label {
     font-size: 14px;
     font-weight: bold;
-    color: var(--text-color);
+    color: var(--text);
 }
 
 .input {
     width: 100%;
     padding: 12px;
     margin-top: 6px;
-    border: 1px solid var(--foreground);
+    border: 1px solid var(--accent);
     border-radius: 6px;
     font-size: 16px;
-    color: black;
+    color: #000000;
 }
 
 .text {
     font-size: 16px;
-    color: black;
+    color: var(--text);
 }
 
 .buttonContainer {
     margin-top: 20px;
-}
-
-.submitBtn {
-    width: 100%;
-    padding: 12px;
-    background-color: var(--background);
-    color: white;
-    border: none;
-    border-radius: 6px;
-    font-size: 16px;
-    cursor: pointer;
-}
-
-.submitBtn:hover {
-    background-color: #ff0000;
+	text-align: center;
 }

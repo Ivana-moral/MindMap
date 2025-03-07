@@ -6,12 +6,12 @@
 }
 
 .loginForm {
-    background-color: var(--foreground);
+    background-color: var(--secondary);
     padding: 30px;
     width: 100%;
     max-width: 400px;
     border-radius: 4px;
-    box-shadow: 10px 10px 15px rgba(255, 255, 255, 0.15);
+    box-shadow: 5px 5px 10px var(--accent);
 }
 
 .inputField {
@@ -29,14 +29,14 @@
     display: block;
     margin-bottom: 6px;
     font-weight: bold;
-    color: var(--text-color);
+    color: var(--text);
 }
 
 .buttonField {
     width: 100%;
     padding: 12px;
-    background-color: var(--background);
-    color: var(--text-color);
+    background-color: var(--primary);
+    color: var(--text);
     border: none;
     font-size: 16px;
     cursor: pointer;
@@ -50,7 +50,7 @@
 }
 
 .signUp .link {
-    color: rgb(255, 0, 0);
+    color: var(--accent);
     text-decoration: none;
     font-weight: bold;
     cursor: pointer;
