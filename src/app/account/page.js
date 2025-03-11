@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import styles from './page.module.css';
+import Button from '@/app/util/Button'
 
 export default function Account() {
     // TODO: fetch actual data from backend using server side props
@@ -61,12 +62,7 @@ export default function Account() {
 
                     {/* Save Button */}
                     <div className={styles.buttonContainer}>
-                        <button
-                            type="submit"
-                            className={styles.submitBtn}
-                        >
-                            Save Changes
-                        </button>
+						<Button text="Save Changes" />
                     </div>
                 </form>
             </div>
