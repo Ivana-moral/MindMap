@@ -28,7 +28,6 @@ export default function GrammarPage() {
             options: ['El', 'La', 'Un', 'Una'],
             correctAnswer: 'El',
         },
-        // Add more lessons here...
     };
 
     //When no grammer practice is not available for a lesson
