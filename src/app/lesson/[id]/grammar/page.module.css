@@ -1,0 +1,55 @@
+.grammarContainer {
+    text-align: center;
+    padding: 20px;
+}
+
+.quizContainer {
+    margin-top: 20px;
+    padding: 15px;
+    border: 2px solid var(--primary);
+    border-radius: 8px;
+    background-color: var(--primary);
+}
+
+.optionsContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.optionButton {
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    background-color: var(--primary);
+    color: white;
+}
+
+.optionButton:hover {
+    background-color: #0056b3;
+}
+
+/* Correct answer styling */
+.correct {
+    background-color: #28a745 !important;
+}
+
+/* Incorrect answer styling */
+.incorrect {
+    background-color: #dc3545 !important;
+}
+
+.correctText {
+    color: #28a745;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.incorrectText {
+    color: #dc3545;
+    font-weight: bold;
+    margin-top: 10px;
+}

@@ -1,0 +1,61 @@
+.quizContainer {
+    text-align: center;
+    padding: 20px;
+}
+
+.question {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.optionsContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.optionButton {
+    padding: 12px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    background-color: var(--primary);
+    color: white;
+    transition: background 0.3s;
+}
+
+.optionButton:hover {
+    background-color: var(--primary);
+}
+
+/* Correct answer styling */
+.correct {
+    background-color: #28a745 !important;
+}
+
+/* Incorrect answer styling */
+.incorrect {
+    background-color: #dc3545 !important;
+}
+
+.finalScoreContainer {
+    margin-top: 20px;
+}
+
+.retryButton {
+    margin-top: 10px;
+    padding: 10px 15px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    background-color: var(--primary);
+    color: white;
+}
+
+.retryButton:hover {
+    background-color: var(--primary);
+}
