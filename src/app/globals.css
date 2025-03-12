@@ -29,7 +29,23 @@
 	  --body-size: 1rem;
 	}
 }
+[data-theme="light"] {
+    --text: #131515;
+    --background: #f7f8f8;
+    --primary: #759599;
+    --secondary: #a7c0c3;
+    --accent: #84afb3;
+    --hover: #526a6d;
+}
 
+[data-theme="dark"] {
+    --text: #eaecec;
+    --background: #070808;
+    --primary: #66868a;
+    --secondary: #3c5558;
+    --accent: #4c777b;
+    --hover: #7b9ea2;
+}
 body {
   color: var(--foreground);
   background: var(--background);

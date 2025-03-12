@@ -5,7 +5,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 10px 20px;
-    background-color: #EAEAEA;
+    background-color: var(--secondary);
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
     position: fixed;
     top: 0;
@@ -17,7 +17,7 @@
 .logo {
     font-size: 20px;
     font-weight: bold;
-    color: black;
+    color: var(--text);
 }
 
 .accountIcon {
@@ -25,7 +25,7 @@
     border: none;
     font-size: 28px;
     cursor: pointer;
-    color: black;
+    color: var(--text);
 }
 
 .accountIcon svg {
@@ -41,21 +41,21 @@
     height: calc(100vh - 70px);
     padding-top: 80px;
     text-align: center;
-    background-color: white;
-    color: black;
+    background-color: var(--background);
+    color: var(--text);
 }
 
 .title {
-    font-size: 30px;
+    font-size: var(--heading-size);
     font-weight: bold;
     margin-bottom: 20px;
-    color: var(--green);
+    color: var(--text);
 }
 
 .divider {
     width: 80%;
     height: 1px;
-    background-color: black;
+    background-color: var(--text);
     margin-bottom: 60px;
 }
 
@@ -73,9 +73,9 @@
 }
 
 .courseCard {
-    background-color: #D3D3D3;
-    color: black;
-    font-size: 20px;
+    background-color: var(--accent);
+    color: var(--text);
+    font-size: var(--body-size);
     font-weight: bold;
     padding: 50px;
     border-radius: 12px;
@@ -84,7 +84,7 @@
     height: 220px;
     box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.15);
     cursor: pointer;
-    border: 2px solid var(--green);
+    border: 2px solid var(--primary);
     transition: all 0.3s ease-in-out;
     display: flex;
     justify-content: center;
@@ -92,9 +92,8 @@
 }
 
 .courseCard:hover {
-    background-color: darkgrey;
+    background-color: var(--hover);
 }
-
 
 .addCourseContainer {
     display: flex;
@@ -106,27 +105,27 @@
 
 .input {
     padding: 12px;
-    border: 2px solid black;
+    border: 2px solid var(--text);
     border-radius: 6px;
-    font-size: 16px;
+    font-size: var(--body-size);
     width: 300px;
-    background-color: white;
-    color: black;
+    background-color: var(--background);
+    color: var(--text);
     text-align: center;
 }
 
 .addButton {
     padding: 12px 18px;
-    background-color: #333333;
-    color: white;
+    background-color: var(--text);
+    color: var(--background);
     border: none;
     border-radius: 6px;
-    font-size: 16px;
+    font-size: var(--body-size);
     cursor: pointer;
     transition: background 0.3s ease-in-out;
     width: 300px;
 }
 
 .addButton:hover {
-    background-color: black;
+    background-color: var(--hover);
 }
