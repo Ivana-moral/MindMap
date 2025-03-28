@@ -7,28 +7,28 @@ import styles from './Navbar.module.css';
 
 export default function Navbar() {
     const router = useRouter();
-    const [theme, setTheme] = useState(() => {
-        if (typeof window !== "undefined") {
-            return localStorage.getItem('theme') || 'light';
-        }
-        return 'light';
-    });
-
+	const [theme, setTheme] = useState('light');
     const [menuOpen, setMenuOpen] = useState(false);
 
+	/**
+	 * Theme onClick handler.
+	 */
     const toggleTheme = () => {
         const newTheme = theme === 'light' ? 'dark' : 'light';
         setTheme(newTheme);
-        localStorage.setItem('theme', newTheme);
         document.documentElement.setAttribute('data-theme', newTheme);
     };
 
+	/**
+	 * Menu onClick handler
+	 */
     const toggleMenu = () => {
         setMenuOpen(!menuOpen);
     };
 
     return (
         <>
+			{/* Top Menu */}
             <header className={styles.header}>
                 <span className={styles.logo} onClick={() => router.push('/')}>MindMap</span>
 
