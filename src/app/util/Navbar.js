@@ -7,39 +7,39 @@ import styles from './Navbar.module.css';
 
 export default function Navbar() {
     const router = useRouter();
-    const [theme, setTheme] = useState(() => {
-        if (typeof window !== "undefined") {
-            return localStorage.getItem('theme') || 'light';
-        }
-        return 'light';
-    });
-
+	const [theme, setTheme] = useState('light');
     const [menuOpen, setMenuOpen] = useState(false);
 
+	/**
+	 * Theme onClick handler.
+	 */
     const toggleTheme = () => {
         const newTheme = theme === 'light' ? 'dark' : 'light';
         setTheme(newTheme);
-        localStorage.setItem('theme', newTheme);
         document.documentElement.setAttribute('data-theme', newTheme);
     };
 
+	/**
+	 * Menu onClick handler
+	 */
     const toggleMenu = () => {
         setMenuOpen(!menuOpen);
     };
 
     return (
         <>
+			{/* Top Menu */}
             <header className={styles.header}>
                 <span className={styles.logo} onClick={() => router.push('/')}>MindMap</span>
 
                 <div className={styles.iconContainer}>
-                    <button className={styles.themeToggle} onClick={toggleTheme}>
+                    <button className={styles.themeToggle} onClick={toggleTheme} aria-label="Toggle Theme">
                         {theme === 'light' ? <FaMoon /> : <FaSun />}
                     </button>
-                    <button className={styles.accountIcon} onClick={() => router.push('/account')}>
+                    <button className={styles.accountIcon} onClick={() => router.push('/account')} aria-label="Account Page">
                         <FaUserCircle />
                     </button>
-                    <button className={styles.menuToggle} onClick={toggleMenu}>
+                    <button className={styles.menuToggle} onClick={toggleMenu} aria-label="Open Sidebar">
                         <FaBars />
                     </button>
                 </div>
@@ -47,7 +47,7 @@ export default function Navbar() {
 
             {/* Sidebar Menu */}
             <div className={`${styles.sidebar} ${menuOpen ? styles.show : ''}`}>
-                <button className={styles.closeButton} onClick={toggleMenu}>
+                <button className={styles.closeButton} onClick={toggleMenu} aria-label="Close Sidebar">
                     <FaTimes />
                 </button>
                 <ul>
