@@ -1,35 +1,37 @@
 'use client';
 
-import { useParams, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import styles from './page.module.css';
 
-export default function LessonPage() {
-    const { id } = useParams(); // Get lesson ID from URL
-    const router = useRouter(); // Router for navigation
+export default function LessonExplorer() {
+    const router = useRouter();
 
-    // Example lesson data (Replace with API call later)
-    const lessonData = {
-        1: { title: 'Intro to Spanish', content: 'This is the introduction to Spanish.' },
-        2: { title: 'Lesson 2 - Topic Name', content: 'Lesson 2 content goes here.' },
-        3: { title: 'Lesson 3 - Topic Name', content: 'Lesson 3 content goes here.' },
-        4: { title: 'Lesson 4 - Topic Name', content: 'Lesson 4 content goes here.' },
+    const lessons = [
+        { id: 1, title: 'Intro to Spanish', subtext: '5 vocab • 1 quiz' },
+        { id: 2, title: 'Grammar Basics', subtext: '4 grammar rules' },
+        { id: 3, title: 'Common Phrases', subtext: '10 phrases' },
+        { id: 4, title: 'Culture & Travel', subtext: '3 topics' },
+    ];
+
+    const goToLessonPage = (id) => {
+        router.push(`/lesson/${id}`);
     };
-
-    const lesson = lessonData[id] || { title: 'Lesson Not Found', content: 'No content available.' };
-
-    const goToVocabulary = () => router.push(`/lesson/${id}/vocabulary`);
-    const goToGrammar = () => router.push(`/lesson/${id}/grammar`);
-    const goToQuiz = () => router.push(`/lesson/${id}/quiz`);
 
     return (
         <div className={styles.lessonPageContainer}>
-            <h1 className={styles.lessonTitle}>{lesson.title}</h1>
+            <h2 className={styles.title}>Intro to Spanish</h2>
+            <hr className={styles.divider} />
 
-            {/* Buttons for Lesson Activities */}
             <div className={styles.buttonContainer}>
-                <button className={styles.lessonButton} onClick={goToVocabulary}>Learn Vocabulary</button>
-                <button className={styles.lessonButton} onClick={goToGrammar}>Grammar Practice</button>
-                <button className={styles.lessonButton} onClick={goToQuiz}>Take a Quiz</button>
+                <button className={styles.lessonButton} onClick={() => router.push('/lesson/1/vocab')}>
+                    Learn Vocabulary
+                </button>
+                <button className={styles.lessonButton} onClick={() => router.push('/lesson/1/grammar')}>
+                    Grammar Practice
+                </button>
+                <button className={styles.lessonButton} onClick={() => router.push('/lesson/1/quiz')}>
+                    Take a Quiz
+                </button>
             </div>
         </div>
     );

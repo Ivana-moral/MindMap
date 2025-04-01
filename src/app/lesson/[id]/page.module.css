@@ -1,48 +1,53 @@
 .lessonPageContainer {
     display: flex;
     flex-direction: column;
-    align-items: center; 
-    justify-content: flex-start; 
-    background-color: var(--background);
+    align-items: center;
+    padding: 40px 20px;
     min-height: 100vh;
-    width: 100%;
-    color: white;
-    padding: 20px;
-    text-align: center;
-    padding-top: 40px; 
+    background-color: var(--background);
+    color: var(--text);
 }
 
-.lessonTitle {
-    font-size: 32px;
+.title {
+    font-size: var(--heading-size);
     font-weight: bold;
+    margin-bottom: 10px;
     color: var(--text);
-    margin-bottom: 10px; 
+    text-align: center;
+}
+
+.divider {
+    width: 80%;
+    height: 1px;
+    background-color: var(--text);
+    margin-bottom: 40px;
 }
 
 .buttonContainer {
     display: flex;
-    flex-direction: column; 
+    flex-direction: column;
     align-items: center;
+    gap: 20px;
     width: 100%;
-    gap: 15px;
-    margin-top: 20px;
+    max-width: 400px;
 }
 
 .lessonButton {
-    width: 80%;
-    max-width: 300px;
-    padding: 12px 20px;
+    width: 100%;
+    padding: 14px 20px;
     background-color: var(--primary);
     color: var(--text);
     border: none;
-    border-radius: 8px;
-    font-size: 18px;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 500;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
     text-align: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .lessonButton:hover {
     background-color: var(--hover);
-    transform: scale(1.05);
+    transform: translateY(-2px);
 }

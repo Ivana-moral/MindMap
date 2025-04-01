@@ -9,7 +9,6 @@ export default function GrammarPage() {
     const [selectedAnswer, setSelectedAnswer] = useState(null);
     const [showResult, setShowResult] = useState(false);
 
-    // Example grammar data (Replace with API call later)
     const grammarData = {
         1: {
             topic: 'Present Tense Verbs',
@@ -18,8 +17,7 @@ export default function GrammarPage() {
             quizQuestion: 'What is the correct present tense form of "comer" (to eat) for "yo" (I)?',
             options: ['Como', 'Comes', 'Come', 'Comemos'],
             correctAnswer: 'Como',
-        }
-        ,
+        },
         2: {
             topic: 'Definite and Indefinite Articles',
             explanation: 'In Spanish, "el" and "la" are definite articles (the), while "un" and "una" are indefinite articles (a/an).',
@@ -30,7 +28,6 @@ export default function GrammarPage() {
         },
     };
 
-    //When no grammer practice is not available for a lesson
     const grammarLesson = grammarData[id] || {
         topic: 'No Grammar Lesson Found',
         explanation: 'No content available.',
@@ -40,38 +37,41 @@ export default function GrammarPage() {
         correctAnswer: '',
     };
 
-    // Function to handle answer selection
     const handleAnswerSelect = (answer) => {
         setSelectedAnswer(answer);
         setShowResult(true);
     };
 
     return (
-        <div className={styles.grammarContainer}>
-            <h1>Lesson {id} - {grammarLesson.topic}</h1>
-            <p><strong>Explanation:</strong> {grammarLesson.explanation}</p>
-            <p><strong>Example:</strong> {grammarLesson.exampleSentence}</p>
+        <div className={styles.container}>
+            <h2 className={styles.title}>Lesson {id} - {grammarLesson.topic}</h2>
+            <hr className={styles.divider} />
 
-            {/* Quiz Section */}
-            <div className={styles.quizContainer}>
-                <p><strong>Quiz:</strong> {grammarLesson.quizQuestion}</p>
+            <div className={styles.explanationBox}>
+                <p><strong>Explanation:</strong> {grammarLesson.explanation}</p>
+                <p><strong>Example:</strong> {grammarLesson.exampleSentence}</p>
+            </div>
+
+            <div className={styles.quizCard}>
+                <p className={styles.quizPrompt}><strong>Quiz:</strong> {grammarLesson.quizQuestion}</p>
                 <div className={styles.optionsContainer}>
                     {grammarLesson.options.map((option, index) => (
                         <button 
                             key={index} 
                             className={`${styles.optionButton} ${showResult && option === grammarLesson.correctAnswer ? styles.correct : ''} ${showResult && option !== grammarLesson.correctAnswer && option === selectedAnswer ? styles.incorrect : ''}`}
                             onClick={() => handleAnswerSelect(option)}
-                            disabled={showResult} // Prevents multiple selections
+                            disabled={showResult}
                         >
                             {option}
                         </button>
                     ))}
                 </div>
 
-                {/* Show Result */}
                 {showResult && (
                     <p className={selectedAnswer === grammarLesson.correctAnswer ? styles.correctText : styles.incorrectText}>
-                        {selectedAnswer === grammarLesson.correctAnswer ? ' Correct!' : ' Incorrect! The correct answer is: ' + grammarLesson.correctAnswer}
+                        {selectedAnswer === grammarLesson.correctAnswer 
+                            ? 'Correct!' 
+                            : `Incorrect! The correct answer is: ${grammarLesson.correctAnswer}`}
                     </p>
                 )}
             </div>

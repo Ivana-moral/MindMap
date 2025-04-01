@@ -1,58 +1,41 @@
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation'; // Import Next.js router
+import { useRouter } from 'next/navigation';
 import styles from './page.module.css';
 
 export default function LessonExplorer() {
-    const router = useRouter(); // Initialize router
+    const router = useRouter();
 
-    // Example lesson data
-    const [lessons, setLessons] = useState([
-        { id: 1, title: 'LESSON 1 - Intro to Spanish', overview: 'Lesson overview', expanded: false },
-        { id: 2, title: 'LESSON 2 - (lesson name)', overview: 'Overview of lesson 2', expanded: false },
-        { id: 3, title: 'LESSON 3 - (lesson name)', overview: 'Overview of lesson 3', expanded: false },
-        { id: 4, title: 'LESSON 4 - (lesson name)', overview: 'Overview of lesson 4', expanded: false },
-    ]);
+    const lessons = [
+        { id: 1, title: 'Intro to Spanish', subtext: '5 vocab • 1 quiz' },
+        { id: 2, title: 'Grammar Basics', subtext: '4 grammar rules' },
+        { id: 3, title: 'Common Phrases', subtext: '10 phrases' },
+        { id: 4, title: 'Culture & Travel', subtext: '3 topics' },
+    ];
 
-    // Navigate to the lesson page when clicked
     const goToLessonPage = (id) => {
         router.push(`/lesson/${id}`);
     };
 
-    // Navigate to the Account Page when profile icon is clicked
-    const goToAccountPage = () => {
-        router.push('account');
-    };
-
     return (
-        <div className={styles.lessonContainer}>
-            <div className={styles.lessonWrapper}>
-                {/* Header */}
-                <div className={styles.header}>
-                    <h2>Lesson Explorer</h2>
-                    <div className={styles.profileIcon} onClick={goToAccountPage}>👤</div> {/* Clickable Profile Icon */}
-                </div>
+        <div className={styles.container}>
+            <h2 className={styles.title}>Lesson Explorer</h2>
+            <hr className={styles.divider} />
 
-                {/* Main Content */}
-                <div className={styles.container}>
-
-                    {/* Lessons Section */}
-                    <section className={styles.lessons}>
-                        {lessons.map((lesson) => (
-                            <div
-                                key={lesson.id}
-                                className={`${styles.lessonCard} ${lesson.expanded ? styles.expanded : ''}`}
-                                onClick={() => goToLessonPage(lesson.id)} // Navigate when clicked
-                            >
-                                <div className={styles.lessonHeader}>
-                                    <span className={styles.toggleArrow}>{lesson.expanded ? '▼' : '▲'}</span>
-                                    <h3>{lesson.title}</h3>
-                                </div>
-                            </div>
-                        ))}
-                    </section>
-                </div>
+            <div className={styles.lessonList}>
+                {lessons.map((lesson, index) => (
+                    <div
+                        key={lesson.id}
+                        className={styles.lessonCard}
+                        onClick={() => goToLessonPage(lesson.id)}
+                    >
+                        <span className={styles.lessonNumber}>{index + 1}</span>
+                        <div>
+                            <span className={styles.lessonTitle}>{lesson.title}</span>
+                            <div className={styles.lessonSubtext}>{lesson.subtext}</div>
+                        </div>
+                    </div>
+                ))}
             </div>
         </div>
     );
