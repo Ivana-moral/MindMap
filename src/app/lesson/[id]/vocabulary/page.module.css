@@ -1,6 +1,8 @@
 .vocabularyContainer {
+    padding-top: 80px; 
+    padding-bottom: 40px;
     text-align: center;
-    padding: 20px;
+
 }
 
 .flashcardContainer {
