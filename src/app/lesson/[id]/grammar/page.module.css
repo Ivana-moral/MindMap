@@ -1,55 +1,101 @@
-.grammarContainer {
-    text-align: center;
-    padding-top: 80px;
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+    min-height: 100vh;
+    background-color: var(--background);
+    color: var(--text);
 }
 
-.quizContainer {
-    margin-top: 20px;
-    padding: 15px;
-    border: 2px solid var(--primary);
-    border-radius: 8px;
-    background-color: var(--primary);
+.title {
+    font-size: var(--heading-size);
+    font-weight: bold;
+    color: var(--text);
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.divider {
+    width: 80%;
+    height: 1px;
+    background-color: var(--text);
+    margin-bottom: 30px;
+}
+
+.explanationBox {
+    max-width: 700px;
+    text-align: center;
+    margin-bottom: 40px;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--text);
+}
+
+.quizCard {
+    background-color: var(--secondary);
+    border-radius: 12px;
+    padding: 30px 20px;
+    width: 90%;
+    max-width: 600px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.quizPrompt {
+    font-size: 18px;
+    margin-bottom: 20px;
+    color: var(--text);
 }
 
 .optionsContainer {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 12px;
     margin-top: 10px;
 }
 
 .optionButton {
-    padding: 10px;
+    padding: 12px;
     font-size: 16px;
     cursor: pointer;
     border: none;
-    border-radius: 5px;
-    background-color: var(--primary);
-    color: white;
+    border-radius: 8px;
+    background-color: var(--accent);
+    color: var(--text);
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .optionButton:hover {
-    background-color: #0056b3;
+    background-color: var(--hover);
+    transform: scale(1.03);
 }
 
-/* Correct answer styling */
+.optionButton:active {
+    transform: scale(0.97);
+}
+
+/* Answer feedback */
 .correct {
     background-color: #28a745 !important;
+    color: white;
 }
 
-/* Incorrect answer styling */
 .incorrect {
     background-color: #dc3545 !important;
+    color: white;
+}
+
+.correctText,
+.incorrectText {
+    font-weight: bold;
+    margin-top: 20px;
 }
 
 .correctText {
     color: #28a745;
-    font-weight: bold;
-    margin-top: 10px;
 }
 
 .incorrectText {
     color: #dc3545;
-    font-weight: bold;
-    margin-top: 10px;
 }

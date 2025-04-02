@@ -11,7 +11,6 @@ export default function QuizPage() {
     const [score, setScore] = useState(0);
     const [showFinalScore, setShowFinalScore] = useState(false);
 
-    // Example quiz data (Replace with API call later)
     const quizData = {
         1: [
             {
@@ -41,35 +40,31 @@ export default function QuizPage() {
 
     const questions = quizData[id] || [];
 
-    // Handle answer selection
     const handleAnswerSelect = (answer) => {
         setSelectedAnswer(answer);
-
-        // update score if correct
         if (answer === questions[currentQuestionIndex].correctAnswer) {
             setScore(score + 1);
         }
 
-        // Move to next question after a short delay
         setTimeout(() => {
             if (currentQuestionIndex + 1 < questions.length) {
                 setCurrentQuestionIndex(currentQuestionIndex + 1);
-                setSelectedAnswer(null); // Reset selection for next question
+                setSelectedAnswer(null);
             } else {
-                setShowFinalScore(true); // Show final score if last question
+                setShowFinalScore(true);
             }
         }, 1000);
     };
 
     return (
-        <div className={styles.quizContainer}>
-            <h1>Lesson {id} - Quiz</h1>
+        <div className={styles.container}>
+            <h2 className={styles.title}>Lesson {id} - Quiz</h2>
+            <hr className={styles.divider} />
 
             {!showFinalScore ? (
-                <>
+                <div className={styles.quizCard}>
                     <p className={styles.question}>{questions[currentQuestionIndex].question}</p>
 
-                    {/* Display answer options */}
                     <div className={styles.optionsContainer}>
                         {questions[currentQuestionIndex].options.map((option, index) => (
                             <button
@@ -80,17 +75,17 @@ export default function QuizPage() {
                                         (option === selectedAnswer ? styles.incorrect : '')) 
                                         : ''}`}
                                 onClick={() => handleAnswerSelect(option)}
-                                disabled={selectedAnswer !== null} // Disable after selection
+                                disabled={selectedAnswer !== null}
                             >
                                 {option}
                             </button>
                         ))}
                     </div>
-                </>
+                </div>
             ) : (
-                <div className={styles.finalScoreContainer}>
-                    <h2>Quiz Completed!</h2>
-                    <p>Your Score: {score} / {questions.length}</p>
+                <div className={styles.quizCard}>
+                    <h3 className={styles.resultTitle}>Quiz Completed!</h3>
+                    <p className={styles.resultScore}>Your Score: {score} / {questions.length}</p>
                     <button onClick={() => window.location.reload()} className={styles.retryButton}>
                         Retry Quiz
                     </button>
