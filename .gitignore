@@ -44,8 +44,8 @@ next-env.d.ts
 **/venv/
 
 # Firebase Credentials
-mindmap-credentials.json
+**/mindmap-credentials.json
 
 # Pycaches
-_pycache__/
+**/__pycache__/
 *.pyc
