@@ -34,9 +34,9 @@ def login(token: str, db: Session = Depends(get_db)):
         "email": user.email
     }
 
+#Generate test token for development mode
 @router.get("/test-token/{user_id}")
 def get_test_token(user_id: str, email: str = "test@example.com"):
-    """Generate a test token for development - NOT FOR PRODUCTION"""
     if os.getenv("ENVIRONMENT") != "development":
         raise HTTPException(status_code=403, detail="This endpoint is only available in development mode")
     
@@ -59,7 +59,7 @@ def get_test_token(user_id: str, email: str = "test@example.com"):
         return {
             "user_id": user_id,
             "token": token,
-            "note": "This token can be used directly with your API in development mode"
+            "note": "Use when  API is in development mode"
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error creating test token: {str(e)}")
