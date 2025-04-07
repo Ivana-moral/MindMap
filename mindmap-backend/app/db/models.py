@@ -69,6 +69,8 @@ class Material(Base):
     grammar_structure_practice = Column(String(1000), nullable=True)
     grammar_structure_answer = Column(String(1000), nullable=True)
     
+    grammar_type = Column(String(1000), nullable=True)
+
     # Relationships
     lesson = relationship("Lesson", back_populates="materials")
     user_material_data = relationship("UserMaterialData", back_populates="material")
