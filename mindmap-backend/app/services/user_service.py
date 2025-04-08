@@ -7,11 +7,22 @@ def get_user_by_uid(db: Session, firebase_uid: str):
     return db.query(User).filter(User.user_id == firebase_uid).first()
 
 def create_user(db: Session, firebase_uid: str, email: str, username: str = None, role: str = "student"):
-    username = username or email.split('@')[0]
+    base_username = username or email.split('@')[0]
+    
+    username_attempt = base_username
+    counter = 1
+    
+    # Keep iterating until we find a unique username
+    while db.query(User).filter(User.username == username_attempt).first():
+        # Username exists, try with a number appended
+        username_attempt = f"{base_username}{counter}"
+        counter += 1
+    
+    #guaurenteed unique username
     user = User(
         user_id=firebase_uid, 
         email=email,
-        username=username,
+        username=username_attempt,
         date_created=datetime.date.today(),
         last_login=datetime.date.today(),
         role=role

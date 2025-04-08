@@ -18,6 +18,15 @@ def get_users(role: Optional[str] = None, db:Session = Depends(get_db), current_
     users = user_service.get_all_users(db)
     return users
 
+#gets the role of the current authenticated user
+@router.get("/role")
+def get_user_role(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    return {
+        "user_id": current_user.user_id,
+        "role": current_user.role
+    }
+
+
 #get user by specific id requires admin role or to be the current users own profile
 @router.get("/{user_id}")
 def get_user(user_id: str, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
@@ -77,7 +86,7 @@ def enroll_in_class(user_id: str, class_id: int, db: Session = Depends(get_db), 
     # Validate user and class
     user = user_service.get_user_by_uid(db, user_id)
     if not user:
-        raise HTTPException(status_code=404, detail="User not found")
+        raise HTTPException(status_code=404, detail="Userrr not found")
     
     class_obj = db.query(Class).filter(Class.class_id == class_id).first()
     if not class_obj:
@@ -121,6 +130,6 @@ def unenroll_from_class(user_id: str, class_id: int, db: Session = Depends(get_d
     
     return {"message": "User successfully unenrolled from class"}
 
-#TODO endpoint to tell frontend what the user role is
 
-#endpoint to 
+
+

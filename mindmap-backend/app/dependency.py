@@ -1,4 +1,5 @@
 import os
+import jwt
 from fastapi import Depends, HTTPException
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from sqlalchemy.orm import Session
@@ -14,18 +15,29 @@ def get_current_user(
     db: Session = Depends(get_db)
 ):
     try:
-        user_id, _ = verify_firebase_token(credentials.credentials)
+        user_id, email = verify_firebase_token(credentials.credentials)
         
         user = user_service.get_user_by_uid(db, user_id)
+
+        # In dependency.py
         if not user:
+            print(f"User {user_id} not found, attempting to create")
             # Auto-create test users
             if os.getenv("ENVIRONMENT") == "development" and user_id.startswith('test-'):
-                if 'admin' in user_id:
-                    user = user_service.create_user(db, user_id, "admin@example.com", role="admin")
-                else:
-                    user = user_service.create_user(db, user_id, "student@example.com", role="student")
-            else:
-                raise HTTPException(status_code=404, detail="User not found")
+                print(f"Creating test user with id={user_id}, email={email}")
+                try:
+                    if 'admin' in user_id:
+                        user = user_service.create_user(db, user_id, email, role="admin")
+                        print(f"Created admin user: {user.user_id} with role {user.role}")
+                    elif 'instructor' in user_id:
+                        user = user_service.create_user(db, user_id, email, role="instructor")
+                        print(f"Created instructor user: {user.user_id}")
+                    else:
+                        user = user_service.create_user(db, user_id, email, role="student")
+                        print(f"Created student user: {user.user_id}")
+                except Exception as e:
+                    print(f"Error creating user: {str(e)}")
+                    raise HTTPException(status_code=500, detail=f"Error creating user: {str(e)}")
         
         return user
     
