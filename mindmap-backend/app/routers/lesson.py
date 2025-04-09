@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import List, Optional
 from app.db.database import get_db
-from app.db.models import User, Lesson, InscribedStudents
+from app.db.models import User, Lesson, InscribedStudents, Material
 from app.services import lesson_service, class_service
 from app.dependency import get_current_user
 
@@ -170,3 +170,61 @@ def log_lesson_attempt(
     )
     
     return log
+
+#Get all grammar for a specific lesson
+@router.get("/lessons/{lesson_id}/grammar")
+def get_lesson_grammar(lesson_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+
+    # Check if lesson exists
+    lesson = lesson_service.get_lesson_by_id(db, lesson_id)
+    if not lesson:
+        raise HTTPException(status_code=404, detail="Lesson not found")
+    
+    # Check if user has access to the lesson's class
+    if current_user.role == "student":
+        enrollment = db.query(InscribedStudents).filter(
+            InscribedStudents.user_id == current_user.user_id,
+            InscribedStudents.class_id == lesson.class_id
+        ).first()
+        
+        if not enrollment:
+            raise HTTPException(status_code=403, detail="Not enrolled in the class this lesson belongs to")
+    
+    # Get grammar materials
+    grammar_materials = db.query(Material).filter(
+        Material.lesson_id == lesson_id,
+        Material.type_of_material == "grammar"
+    ).all()
+    
+    return grammar_materials
+
+#Get all vocab for a specific lesson
+@router.get("/lessons/{lesson_id}/vocabulary")
+def get_lesson_vocabulary(
+    lesson_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    
+    # Check if lesson exists
+    lesson = lesson_service.get_lesson_by_id(db, lesson_id)
+    if not lesson:
+        raise HTTPException(status_code=404, detail="Lesson not found")
+    
+    # Check if user has access to the lesson's class
+    if current_user.role == "student":
+        enrollment = db.query(InscribedStudents).filter(
+            InscribedStudents.user_id == current_user.user_id,
+            InscribedStudents.class_id == lesson.class_id
+        ).first()
+        
+        if not enrollment:
+            raise HTTPException(status_code=403, detail="Not enrolled in the class this lesson belongs to")
+    
+    # Get vocabulary materials
+    vocabulary_materials = db.query(Material).filter(
+        Material.lesson_id == lesson_id,
+        Material.type_of_material == "vocabulary"
+    ).all()
+    
+    return vocabulary_materials
