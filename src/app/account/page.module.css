@@ -3,51 +3,64 @@
     justify-content: center;
     align-items: center;
     height: 100vh;
+    background: linear-gradient(to bottom, var(--secondary), var(--background)); /* Gradient background */
 }
 
 .accountWrapper {
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: var(--secondary);
-    padding: 30px;
+    background-color: var(--background); /* Light background */
+    padding: 40px 30px;  /* Adjusted padding for more breathing room */
     width: 100%;
-    max-width: 400px;
-	box-shadow: 5px 5px 10px var(--accent);
-    border-radius: 4px;
+    max-width: 420px;  /* Increased max-width for a more spacious layout */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);  /* Softer shadow for depth */
+    border-radius: 8px;  /* Rounded corners for a more modern look */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;  /* Smooth transition for hover effect */
+}
+
+.accountWrapper:hover {
+    transform: translateY(-5px);  /* Slight lift on hover */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);  /* Larger shadow on hover */
 }
 
 .accountIcon {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 80px;
-    height: 80px;
+    width: 90px;  /* Larger icon size */
+    height: 90px;
     border-radius: 50%;
-    background-color: #ccc;
-    display: flex;
-    font-size: 32px;
+    background: linear-gradient(145deg, var(--accent), var(--secondary));  /* Gradient for a sleek look */
+    font-size: 36px;
     color: white;
     font-weight: bold;
-    margin-bottom: 20px;
+    margin-bottom: 30px;  /* More spacing between the icon and form */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);  /* Soft shadow for depth */
+    transition: transform 0.3s ease;  /* Smooth transition for hover effect */
+}
+
+.accountIcon:hover {
+    transform: scale(1.05);  /* Slight scale effect on hover */
 }
 
 .divider {
     width: 100%;
     height: 2px;
-    background-color: #ccc;
-    margin: 10px auto;
+    background-color: var(--accent);  /* Accent color for divider */
+    margin: 20px 0;  /* More spacing around the divider */
 }
 
 .formGroup {
-    margin-bottom: 20px;
-    text-align: left;
+    margin-bottom: 25px;  /* Slightly larger margin for better spacing */
+    width: 100%;
 }
 
 .label {
-    font-size: 14px;
+    font-size: 16px;  /* Slightly larger font size for better readability */
     font-weight: bold;
-    color: var(--text);
+    color: var(--text);  /* Text color from the variables */
+    margin-bottom: 6px;
 }
 
 .input {
@@ -57,15 +70,53 @@
     border: 1px solid var(--accent);
     border-radius: 6px;
     font-size: 16px;
-    color: #000000;
+    color: var(--text);
+    background-color: var(--background);  /* Light background for input fields */
+    transition: border-color 0.3s ease;  /* Smooth transition on focus */
+}
+
+.input:focus {
+    border-color: var(--primary);  /* Highlight input borders on focus */
+    outline: none;
 }
 
 .text {
     font-size: 16px;
-    color: var(--text);
+    color: var(--text);  /* Consistent text color */
+    background-color: var(--background);  /* Light background for text */
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid var(--primary);  /* Border color for text field */
 }
 
 .buttonContainer {
-    margin-top: 20px;
-	text-align: center;
+    margin-top: 30px;  /* Increased margin for better spacing */
+    width: 100%;
+    text-align: center;
+}
+
+/* Ensure the button has a local class name instead of a global one */
+.button {
+    padding: 12px 24px;
+    background-color: var(--accent);  /* Button color using accent variable */
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.button:hover {
+    background-color: var(--hover);  /* Hover color using the hover variable */
+    transform: translateY(-2px);  /* Slight movement on hover */
+}
+
+.button:active {
+    transform: translateY(0);  /* Reset movement when clicked */
+}
+
+.button:focus {
+    outline: none;  /* Remove default focus outline */
 }
