@@ -43,6 +43,9 @@ next-env.d.ts
 #Python Virtual Env
 **/venv/
 
-#Pycache
-__pycache__/
+# Firebase Credentials
+**/mindmap-credentials.json
+
+# Pycaches
+**/__pycache__/
 *.pyc

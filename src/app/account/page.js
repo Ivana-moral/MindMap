@@ -1,33 +1,48 @@
 'use client'
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './page.module.css';
-import Button from '@/app/util/Button'
+import Button from '@/app/util/Button';
+import { auth } from '@/app/util/firebase';
+import { redirect } from 'next/navigation';
 
 export default function Account() {
-    // TODO: fetch actual data from backend using server side props
+	const [user, setUser] = useState(null);
     const [formData, setFormData] = useState({
-        username: 'jsmith1',
-        firstName: 'John',
-        lastName: 'Smith',
-        email: 'john.smith@example.com',
+        username: '',
+        firstName: '',
+        lastName: '',
+        email: '',
     });
 
-    // Dynamically updates formData on input
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;   // Get name and value attribute of field
-        setFormData((prevState) => ({
-          ...prevState,     // Copy previous form data
-          [name]: value,    // Update the value of the field that was changed
-        }));
-    };
+    useEffect(() => {
+        // Redirect to login if no user is found
+        if (!auth.currentUser) {
+            redirect('/login');
+        } else {
+            // Set the user state if authenticated
+            const currentUser = auth.currentUser;
+            setUser(currentUser);
+            setFormData({
+                username: currentUser.displayName,
+                firstName: currentUser.displayName.split(' ')[0],
+                lastName: currentUser.displayName.split(' ')[1],
+                email: currentUser.email,
+            });
+        }
+    }, []);
+
+    // If we haven't gotten the user yet, return a loading state or a spinner
+    if (!user) {
+        return <div>Loading...</div>;
+    }
 
     return (
         <div className={styles.accountContainer}>
             <div className={styles.accountWrapper}>
                 {/* Account Icon */}
                 <div className={styles.accountIcon}>
-                    {formData.username.charAt(0).toUpperCase()}
+                    {formData.firstName.charAt(0).toUpperCase()}
                 </div>
 
                 {/* Line */}
@@ -35,18 +50,6 @@ export default function Account() {
 
                 {/* Account Information Form */}
                 <form>
-                    <div className={styles.formGroup}>
-                        <label htmlFor="username" className={styles.label}>Username</label>
-                        <input
-                            type="text"
-                            id="username"
-                            name="username"
-                            value={formData.username}
-                            onChange={handleInputChange}
-                            className={styles.input}
-                            placeholder="Username"
-                        />
-                    </div>
                     <div className={styles.formGroup}>
                         <label htmlFor="firstName" className={styles.label}>First Name</label>
                         <p className={styles.text}>{formData.firstName}</p>
@@ -62,7 +65,7 @@ export default function Account() {
 
                     {/* Save Button */}
                     <div className={styles.buttonContainer}>
-						<Button text="Save Changes" />
+						<Button text="Sign Out" onClick={() => auth.signOut()}/>
                     </div>
                 </form>
             </div>
