@@ -1,7 +1,5 @@
-import * as firebase from 'firebase/app';
+import { initializeApp, getApps, getApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
-// Follow this pattern to import other Firebase services
-// import { } from 'firebase/<service>';
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -12,11 +10,7 @@ const firebaseConfig = {
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
 
-const app = firebase.initializeApp(firebaseConfig);
-
-if(firebase) {
-	console.log('Initialized Application Count: ' + firebase.getApps().length);
-}
+const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
 
 export const auth = getAuth(app);
 export default app;

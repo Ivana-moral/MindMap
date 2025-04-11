@@ -1,48 +1,38 @@
 'use client'
 
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import styles from './page.module.css';
 import Button from '@/app/util/Button';
-import { auth } from '@/app/util/firebase';
-import { redirect } from 'next/navigation';
+import { useAuth } from '@/app/util/auth/AuthContext';
+import { useRouter } from 'next/navigation';
 
 export default function Account() {
-	const [user, setUser] = useState(null);
-    const [formData, setFormData] = useState({
-        username: '',
-        firstName: '',
-        lastName: '',
-        email: '',
-    });
+	const { user, loading, signOut } = useAuth();
+	const router = useRouter();
 
-    useEffect(() => {
-        // Redirect to login if no user is found
-        if (!auth.currentUser) {
-            redirect('/login');
-        } else {
-            // Set the user state if authenticated
-            const currentUser = auth.currentUser;
-            setUser(currentUser);
-            setFormData({
-                username: currentUser.displayName,
-                firstName: currentUser.displayName.split(' ')[0],
-                lastName: currentUser.displayName.split(' ')[1],
-                email: currentUser.email,
-            });
-        }
-    }, []);
+	useEffect(() => {
+		if(loading) {
+			return;
+		}
 
-    // If we haven't gotten the user yet, return a loading state or a spinner
-    if (!user) {
-        return <div>Loading...</div>;
-    }
+		if(!user) {
+			router.replace('/login');
+		}
+	}, [user, loading, router]);
+
+	if(loading || !user) {
+		return <div>Loading...</div>
+	}
+
+	const displayName = user.displayName || '';
+	const [firstName, lastName] = displayName.split(' ');
 
     return (
         <div className={styles.accountContainer}>
             <div className={styles.accountWrapper}>
                 {/* Account Icon */}
                 <div className={styles.accountIcon}>
-                    {formData.firstName.charAt(0).toUpperCase()}
+                    {firstName?.charAt(0).toUpperCase()}
                 </div>
 
                 {/* Line */}
@@ -52,22 +42,22 @@ export default function Account() {
                 <form>
                     <div className={styles.formGroup}>
                         <label htmlFor="firstName" className={styles.label}>First Name</label>
-                        <p className={styles.text}>{formData.firstName}</p>
+                        <p className={styles.text}>{firstName}</p>
                     </div>
                     <div className={styles.formGroup}>
                         <label htmlFor="lastName" className={styles.label}>Last Name</label>
-                        <p className={styles.text}>{formData.lastName}</p>
+                        <p className={styles.text}>{lastName}</p>
                     </div>
                     <div className={styles.formGroup}>
                         <label htmlFor="email" className={styles.label}>Email</label>
-                        <p className={styles.text}>{formData.email}</p>
-                    </div>
-
-                    {/* Save Button */}
-                    <div className={styles.buttonContainer}>
-						<Button text="Sign Out" onClick={() => auth.signOut()}/>
+                        <p className={styles.text}>{user.email}</p>
                     </div>
                 </form>
+
+				{/* Sign Out Button */}
+				<div className={styles.buttonContainer}>
+					<Button text="Sign Out" onClick={signOut}/>
+				</div>
             </div>
         </div>
     );

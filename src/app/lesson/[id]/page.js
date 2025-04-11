@@ -23,7 +23,7 @@ export default function LessonExplorer() {
             <hr className={styles.divider} />
 
             <div className={styles.buttonContainer}>
-                <button className={styles.lessonButton} onClick={() => router.push('/lesson/1/vocab')}>
+                <button className={styles.lessonButton} onClick={() => router.push('/lesson/1/vocabulary')}>
                     Learn Vocabulary
                 </button>
                 <button className={styles.lessonButton} onClick={() => router.push('/lesson/1/grammar')}>
