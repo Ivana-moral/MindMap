@@ -1,21 +1,13 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import styles from './page.module.css';
 
+import { useRouter, useParams } from 'next/navigation';
+
 export default function LessonExplorer() {
-    const router = useRouter();
+	const router = useRouter();
 
-    const lessons = [
-        { id: 1, title: 'Intro to Spanish', subtext: '5 vocab • 1 quiz' },
-        { id: 2, title: 'Grammar Basics', subtext: '4 grammar rules' },
-        { id: 3, title: 'Common Phrases', subtext: '10 phrases' },
-        { id: 4, title: 'Culture & Travel', subtext: '3 topics' },
-    ];
-
-    const goToLessonPage = (id) => {
-        router.push(`/lesson/${id}`);
-    };
+	const { id } = useParams();
 
     return (
         <div className={styles.lessonPageContainer}>
@@ -23,13 +15,13 @@ export default function LessonExplorer() {
             <hr className={styles.divider} />
 
             <div className={styles.buttonContainer}>
-                <button className={styles.lessonButton} onClick={() => router.push('/lesson/1/vocabulary')}>
+                <button className={styles.lessonButton} onClick={() => router.push(`/lesson/${id}/vocabulary`)}>
                     Learn Vocabulary
                 </button>
-                <button className={styles.lessonButton} onClick={() => router.push('/lesson/1/grammar')}>
+                <button className={styles.lessonButton} onClick={() => router.push(`/lesson/${id}/grammar`)}>
                     Grammar Practice
                 </button>
-                <button className={styles.lessonButton} onClick={() => router.push('/lesson/1/quiz')}>
+                <button className={styles.lessonButton} onClick={() => router.push(`/lesson/${id}/quiz`)}>
                     Take a Quiz
                 </button>
             </div>
