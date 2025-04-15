@@ -73,5 +73,6 @@
 .loading, .complete {
     text-align: center;
     font-size: 1.5rem;
-    margin-top: 3rem;
+    margin-top: 5rem;
+    color: var(--text);
 }

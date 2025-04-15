@@ -5,6 +5,7 @@ import styles from './page.module.css';
 import { useAuth } from '@/app/util/auth/AuthContext';
 import { useParams, useRouter } from 'next/navigation';
 import QuizStatus from '@/app/util/QuizStatus';
+import { loadUSEModel, getSimilarityScore } from '@/app/util/similarity';
 
 export default function QuizPage() {
     const { id } = useParams();
@@ -59,33 +60,77 @@ export default function QuizPage() {
         fetchQuestions();
     }, [user, loading, router, id]);
 
+    useEffect(() => {
+        loadUSEModel().then(() => {
+            console.log('USE model loaded in background');
+        });
+    }, []);
+
+
     if (loading || fetching) return <div className={styles.loading}>Loading...</div>;
     if (questions.length === 0) return <div>No questions found for this lesson.</div>;
     if (currentIndex >= questions.length) return <div className={styles.complete}>🎉 Quiz complete!</div>;
 
     const current = questions[currentIndex];
 
-    const normalize = (str) => str.normalize("NFD").replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
+    const normalizeAndStrip = (str) => {
+        return str
+            .replace(/\((el|la|los|las|un|una|unos|unas)\)/gi, '$1')
+            .normalize('NFD')                                     // decompose accents
+            .replace(/[\u0300-\u036f]/g, '')                      // remove accents
+            .toLowerCase()                                        // lowercase everything
+            .replace(/\s+/g, ' ')                                 // collapse spaces
+            .trim();                                              // remove outer spaces
+    };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const userNormalized = normalize(userAnswer);
-        const answerNormalized = normalize(current.answer);
-        const isAcceptable = userNormalized === answerNormalized;
+        const userNormalized = normalizeAndStrip(userAnswer);
+        const answerNormalized = normalizeAndStrip(current.answer);
+        console.log("User Normalized: ", userNormalized);
+        console.log("Answer Normalized: ", answerNormalized);
+
+        const similarity = await getSimilarityScore(userNormalized, answerNormalized);
+        const isAcceptable = similarity > 0.85;
 
         setIsCorrect(isAcceptable);
         setShowFeedback(true);
 
-        if(currentIndex < 20) {
-            setTimeout(() => {
-                setUserAnswer('');
-                setShowFeedback(false);
-                setCurrentIndex((prev) => prev + 1);
-            }, 1000);
-        } else {
-            //TODO: POST RESULTS TO BACK-END
+        console.log('Similarity:', similarity);
+
+        const difficulty_rating = isAcceptable ? "GOOD" : "AGAIN";
+        const jwt = await user.getIdToken();
+        
+        try {
+            const res = await fetch('http://127.0.0.1:8000/api/quiz/submit-answer', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${jwt}`
+                },
+                body: JSON.stringify({
+                    material_id: questions[currentIndex].material_id,
+                    lesson_id: questions[currentIndex].lesson_id,
+                    was_correct: isAcceptable,
+                    difficulty_rating: difficulty_rating
+                })
+            });
+
+            if (!res.ok) {
+                throw new Error('Failed to submit answer');
+            }
+        } catch (err) {
+            console.error('Error submitting answer:', err);
         }
+
+        
+
+        setTimeout(() => {
+            setUserAnswer('');
+            setShowFeedback(false);
+            setCurrentIndex((prev) => prev + 1);
+        }, 1000);
     };
 
     return (
