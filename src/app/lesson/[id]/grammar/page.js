@@ -1,79 +1,99 @@
 'use client';
 
 import { useParams } from 'next/navigation';
-import { useState } from 'react';
+import { useAuth } from '@/app/util/auth/AuthContext';
+import { useEffect, useState } from 'react';
+import Flashcard from '@/app/util/Flashcard';
 import styles from './page.module.css';
 
 export default function GrammarPage() {
     const { id } = useParams();
-    const [selectedAnswer, setSelectedAnswer] = useState(null);
-    const [showResult, setShowResult] = useState(false);
+    const { user, loading } = useAuth();
+    const [grammarItems, setGrammarItems] = useState([]);
+    const [fetching, setFetching] = useState(true);
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const [isFlipped, setIsFlipped] = useState(false);
 
-    const grammarData = {
-        1: {
-            topic: 'Present Tense Verbs',
-            explanation: 'In Spanish, regular verbs in the present tense end in -ar, -er, or -ir. Example: "hablar" (to speak) becomes "hablo" (I speak).',
-            exampleSentence: 'Yo hablo español.',
-            quizQuestion: 'What is the correct present tense form of "comer" (to eat) for "yo" (I)?',
-            options: ['Como', 'Comes', 'Come', 'Comemos'],
-            correctAnswer: 'Como',
-        },
-        2: {
-            topic: 'Definite and Indefinite Articles',
-            explanation: 'In Spanish, "el" and "la" are definite articles (the), while "un" and "una" are indefinite articles (a/an).',
-            exampleSentence: 'El gato es negro. (The cat is black.)',
-            quizQuestion: 'Which article is correct for "libro" (book)?',
-            options: ['El', 'La', 'Un', 'Una'],
-            correctAnswer: 'El',
-        },
+    useEffect(() => {
+        if (loading || !user) return;
+
+        const fetchGrammar = async () => {
+            try {
+                const jwt = await user.getIdToken();
+                const res = await fetch(`http://127.0.0.1:8000/api/lessons/${id}/grammar`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${jwt}`
+                    }
+                });
+
+                if (!res.ok) throw new Error(`HTTP Error! Status Code ${res.status}`);
+                const data = await res.json();
+                setGrammarItems(data);
+            } catch (err) {
+                console.error('Failed to fetch grammar:', err);
+            } finally {
+                setFetching(false);
+            }
+        };
+
+        fetchGrammar();
+    }, [user, loading, id]);
+
+    const handlePrev = () => {
+        if (currentIndex > 0) {
+            setCurrentIndex(prev => prev - 1);
+            setIsFlipped(false);
+        }
     };
 
-    const grammarLesson = grammarData[id] || {
-        topic: 'No Grammar Lesson Found',
-        explanation: 'No content available.',
-        exampleSentence: '',
-        quizQuestion: '',
-        options: [],
-        correctAnswer: '',
+    const handleNext = () => {
+        if (currentIndex < grammarItems.length - 1) {
+            setCurrentIndex(prev => prev + 1);
+            setIsFlipped(false);
+        }
     };
 
-    const handleAnswerSelect = (answer) => {
-        setSelectedAnswer(answer);
-        setShowResult(true);
+    const parsePrompt = (answer) => {
+        const match = answer.match(/\((.*?)\)/);
+        if (match) {
+            return answer.replace(match[0], '___').trim();
+        }
+        return answer;
     };
+
+    const getAnswer = (answer) => {
+        const match = answer.match(/\((.*?)\)/);
+        return match ? match[1] : answer;
+    };
+
+    if (loading || fetching) return <div className={styles.container}><p>Loading...</p></div>;
+
+    if (grammarItems.length === 0) return (
+        <div className={styles.container}>
+            <h2 className={styles.title}>Lesson {id} - Grammar</h2>
+            <p>No grammar content found for this lesson.</p>
+        </div>
+    );
+
+    const currentItem = grammarItems[currentIndex];
 
     return (
         <div className={styles.container}>
-            <h2 className={styles.title}>Lesson {id} - {grammarLesson.topic}</h2>
-            <hr className={styles.divider} />
-
-            <div className={styles.explanationBox}>
-                <p><strong>Explanation:</strong> {grammarLesson.explanation}</p>
-                <p><strong>Example:</strong> {grammarLesson.exampleSentence}</p>
-            </div>
-
-            <div className={styles.quizCard}>
-                <p className={styles.quizPrompt}><strong>Quiz:</strong> {grammarLesson.quizQuestion}</p>
-                <div className={styles.optionsContainer}>
-                    {grammarLesson.options.map((option, index) => (
-                        <button 
-                            key={index} 
-                            className={`${styles.optionButton} ${showResult && option === grammarLesson.correctAnswer ? styles.correct : ''} ${showResult && option !== grammarLesson.correctAnswer && option === selectedAnswer ? styles.incorrect : ''}`}
-                            onClick={() => handleAnswerSelect(option)}
-                            disabled={showResult}
-                        >
-                            {option}
-                        </button>
-                    ))}
+            <h2 className={styles.title}>Lesson {id} - Grammar</h2>
+            <div className={styles.flashcardContainer}>
+                <Flashcard
+                    word={parsePrompt(currentItem.grammar_structure_answer)}
+                    definition={getAnswer(currentItem.grammar_structure_answer)}
+                    isFlipped={isFlipped}
+                    onFlip={() => setIsFlipped(prev => !prev)}
+                />
+                <div className={styles.navButtons}>
+                    <button onClick={handlePrev} className={styles.navBtn}>Prev</button>
+                    <span className={styles.counter}>{currentIndex + 1} / {grammarItems.length}</span>
+                    <button onClick={handleNext} className={styles.navBtn}>Next</button>
                 </div>
-
-                {showResult && (
-                    <p className={selectedAnswer === grammarLesson.correctAnswer ? styles.correctText : styles.incorrectText}>
-                        {selectedAnswer === grammarLesson.correctAnswer 
-                            ? 'Correct!' 
-                            : `Incorrect! The correct answer is: ${grammarLesson.correctAnswer}`}
-                    </p>
-                )}
             </div>
         </div>
     );
