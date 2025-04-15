@@ -1,106 +1,78 @@
 .container {
+    max-width: 700px;
+    margin: 4rem auto;
+    padding: 2rem;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 40px 20px;
-    min-height: 100vh;
-    background-color: var(--background);
-    color: var(--text);
 }
 
-.title {
-    font-size: var(--heading-size);
-    font-weight: bold;
-    color: var(--text);
-    margin-bottom: 10px;
-    text-align: center;
-}
-
-.divider {
-    width: 80%;
-    height: 1px;
-    background-color: var(--text);
-    margin-bottom: 30px;
-}
-
-.quizCard {
-    background-color: var(--secondary);
-    border-radius: 12px;
-    padding: 30px 20px;
-    width: 90%;
-    max-width: 600px;
-    text-align: center;
+.card {
+    background-color: var(--primary);
+    border-radius: 16px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 3rem;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 2rem;
 }
 
-.question {
-    font-size: 18px;
-    font-weight: 500;
-    margin-bottom: 20px;
+.prompt {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #333;
+    color: var(--text);
 }
 
-.optionsContainer {
+.form {
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    margin-top: 10px;
+    align-items: center;
+    width: 100%;
 }
 
-.optionButton {
-    padding: 12px;
-    font-size: 16px;
-    cursor: pointer;
+.input {
+    font-size: 1.5rem;
+    padding: 1rem;
+    width: 100%;
+    max-width: 600px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.button {
+    font-size: 1.2rem;
+    padding: 0.75rem 2rem;
+    background-color: var(--hover);
+    color: var(--text);
     border: none;
     border-radius: 8px;
-    background-color: var(--accent);
-    color: var(--text);
-    transition: background-color 0.3s ease, transform 0.2s ease;
+    cursor: pointer;
 }
 
-.optionButton:hover {
-    background-color: var(--hover);
-    transform: scale(1.03);
+.button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
 }
 
-.optionButton:active {
-    transform: scale(0.97);
+.feedback {
+    margin-top: 1rem;
+    font-size: 1.2rem;
+    font-weight: bold;
 }
 
 .correct {
-    background-color: #28a745 !important;
-    color: white;
+    color: green;
 }
 
 .incorrect {
-    background-color: #dc3545 !important;
-    color: white;
+    color: red;
 }
 
-.resultTitle {
-    font-size: 22px;
-    font-weight: bold;
-    margin-bottom: 10px;
+.loading, .complete {
+    text-align: center;
+    font-size: 1.5rem;
+    margin-top: 5rem;
     color: var(--text);
-}
-
-.resultScore {
-    font-size: 18px;
-    margin-bottom: 20px;
-    color: var(--text);
-}
-
-.retryButton {
-    padding: 10px 20px;
-    font-size: 16px;
-    background-color: var(--accent);
-    color: var(--text);
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.retryButton:hover {
-    background-color: var(--hover);
-    transform: scale(1.05);
 }
