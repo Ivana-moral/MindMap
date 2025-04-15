@@ -1,94 +1,123 @@
 'use client';
 
-import { useParams } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './page.module.css';
+import { useAuth } from '@/app/util/auth/AuthContext';
+import { useParams, useRouter } from 'next/navigation';
+import QuizStatus from '@/app/util/QuizStatus';
 
 export default function QuizPage() {
     const { id } = useParams();
-    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-    const [selectedAnswer, setSelectedAnswer] = useState(null);
-    const [score, setScore] = useState(0);
-    const [showFinalScore, setShowFinalScore] = useState(false);
+    const { user, loading } = useAuth();
+    const router = useRouter();
 
-    const quizData = {
-        1: [
-            {
-                question: "What does 'Hola' mean?",
-                options: ["Goodbye", "Hello", "Thank you", "Please"],
-                correctAnswer: "Hello",
-            },
-            {
-                question: "How do you say 'Thank you' in Spanish?",
-                options: ["Adiós", "Hola", "Gracias", "De nada"],
-                correctAnswer: "Gracias",
-            }
-        ],
-        2: [
-            {
-                question: "Which article is correct for 'perro' (dog)?",
-                options: ["El", "La", "Un", "Una"],
-                correctAnswer: "El",
-            },
-            {
-                question: "Which word means 'House' in Spanish?",
-                options: ["Gato", "Casa", "Perro", "Libro"],
-                correctAnswer: "Casa",
-            }
-        ],
-    };
+    const [questions, setQuestions] = useState([]);
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const [userAnswer, setUserAnswer] = useState('');
+    const [showFeedback, setShowFeedback] = useState(false);
+    const [isCorrect, setIsCorrect] = useState(null);
+    const [fetching, setFetching] = useState(true);
+    const [progress, setProgress] = useState(null);
 
-    const questions = quizData[id] || [];
-
-    const handleAnswerSelect = (answer) => {
-        setSelectedAnswer(answer);
-        if (answer === questions[currentQuestionIndex].correctAnswer) {
-            setScore(score + 1);
+    useEffect(() => {
+        if(loading) {
+            return;
         }
 
-        setTimeout(() => {
-            if (currentQuestionIndex + 1 < questions.length) {
-                setCurrentQuestionIndex(currentQuestionIndex + 1);
-                setSelectedAnswer(null);
-            } else {
-                setShowFinalScore(true);
+        if(!user) {
+            router.replace('/login');
+            return;
+        }
+
+        async function fetchQuestions() {
+            try {
+                const jwt = await user.getIdToken();
+                const res = await fetch(`http://127.0.0.1:8000/api/quiz/lessons/${id}/quiz?quiz_size=20`, {
+                    method: 'GET',
+					headers: {
+						'Content-Type': 'application/json',
+						'Authorization': `Bearer ${jwt}`
+					}
+                });
+
+                if(!res.ok) {
+                    throw new Error(`HTTP Error! Status Code ${res.status}`);
+                }
+
+                const data = await res.json();
+                console.log(data);
+
+                setProgress(data.progress);
+                setQuestions(data.questions);
+            } catch (err) {
+                console.error(`Failed to fetch vocabulary: `, err);
+            } finally {
+                setFetching(false);
             }
-        }, 1000);
+        }
+
+        fetchQuestions();
+    }, [user, loading, router, id]);
+
+    if (loading || fetching) return <div className={styles.loading}>Loading...</div>;
+    if (questions.length === 0) return <div>No questions found for this lesson.</div>;
+    if (currentIndex >= questions.length) return <div className={styles.complete}>🎉 Quiz complete!</div>;
+
+    const current = questions[currentIndex];
+
+    const normalize = (str) => str.normalize("NFD").replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        const userNormalized = normalize(userAnswer);
+        const answerNormalized = normalize(current.answer);
+        const isAcceptable = userNormalized === answerNormalized;
+
+        setIsCorrect(isAcceptable);
+        setShowFeedback(true);
+
+        if(currentIndex < 20) {
+            setTimeout(() => {
+                setUserAnswer('');
+                setShowFeedback(false);
+                setCurrentIndex((prev) => prev + 1);
+            }, 1000);
+        } else {
+            //TODO: POST RESULTS TO BACK-END
+        }
     };
 
     return (
         <div className={styles.container}>
-            <h2 className={styles.title}>Lesson {id} - Quiz</h2>
-            <hr className={styles.divider} />
+            <QuizStatus
+            progress={progress}
+            currentIndex={currentIndex}
+            totalQuestions={questions.length}
+            />
 
-            {!showFinalScore ? (
-                <div className={styles.quizCard}>
-                    <p className={styles.question}>{questions[currentQuestionIndex].question}</p>
+            <div className={styles.card}>
+                <p className={styles.prompt}>{current.prompt}</p>
+            </div>
 
-                    <div className={styles.optionsContainer}>
-                        {questions[currentQuestionIndex].options.map((option, index) => (
-                            <button
-                                key={index}
-                                className={`${styles.optionButton} 
-                                    ${selectedAnswer ? 
-                                        (option === questions[currentQuestionIndex].correctAnswer ? styles.correct : 
-                                        (option === selectedAnswer ? styles.incorrect : '')) 
-                                        : ''}`}
-                                onClick={() => handleAnswerSelect(option)}
-                                disabled={selectedAnswer !== null}
-                            >
-                                {option}
-                            </button>
-                        ))}
-                    </div>
-                </div>
-            ) : (
-                <div className={styles.quizCard}>
-                    <h3 className={styles.resultTitle}>Quiz Completed!</h3>
-                    <p className={styles.resultScore}>Your Score: {score} / {questions.length}</p>
-                    <button onClick={() => window.location.reload()} className={styles.retryButton}>
-                        Retry Quiz
-                    </button>
+            <form onSubmit={handleSubmit} className={styles.form}>
+                <input
+                    type="text"
+                    value={userAnswer}
+                    onChange={(e) => setUserAnswer(e.target.value)}
+                    disabled={showFeedback}
+                    className={styles.input}
+                    autoFocus
+                    placeholder="Type your answer..."
+                />
+                <button type="submit" disabled={showFeedback || !userAnswer.trim()} className={styles.button}>
+                    Submit
+                </button>
+            </form>
+
+            {showFeedback && (
+                <div className={`${styles.feedback} ${isCorrect ? styles.correct : styles.incorrect}`}>
+                    {isCorrect ? '✅ Correct!' : `❌ Correct answer: ${current.answer}`}
                 </div>
             )}
         </div>
