@@ -15,13 +15,13 @@ export default function VocabularyPage() {
 
 	const [vocab, setVocab] = useState([]);
 	const [fetching, setFetching] = useState(true);
+	const [currentIndex, setCurrentIndex] = useState(0);
+	const [isFlipped, setIsFlipped] = useState(false);
 
 	useEffect(() => {
-		if(loading) {
-			return;
-		}
+		if (loading) return;
 
-		if(!user) {
+		if (!user) {
 			router.replace('/login');
 			return;
 		}
@@ -37,7 +37,7 @@ export default function VocabularyPage() {
 					}
 				});
 
-				if(!res.ok) {
+				if (!res.ok) {
 					throw new Error(`HTTP Error! Status Code ${res.status}`);
 				}
 
@@ -60,20 +60,51 @@ export default function VocabularyPage() {
 		fetchData();
 	}, [user, loading, router, id]);
 
-	if(loading || fetching) {
-		return <div>Loading...</div>
+	const handlePrev = () => {
+		if (currentIndex > 0) {
+			setCurrentIndex(prev => prev - 1);
+			setIsFlipped(false);
+		}
+	};
+
+	const handleNext = () => {
+		if (currentIndex < vocab.length - 1) {
+			setCurrentIndex(prev => prev + 1);
+			setIsFlipped(false);
+		}
+	};
+
+	if (loading || fetching) {
+		return <div className={styles.container}><p>Loading...</p></div>;
 	}
 
-    return (
-        <div className={styles.vocabularyContainer}>
-            <h1>Lesson {id} - Vocabulary</h1>
-            <div className={styles.flashcardContainer}>
-				{vocab.length === 0 ? (<p>No vocabulary found for this lesson.</p>) : (
-					vocab.map((item, index) => (
-						<Flashcard key={index} word={item.word} definition={item.definition} />
-					))
-				)}
-            </div>
-        </div>
-    );
+	if (vocab.length === 0) {
+		return (
+			<div className={styles.container}>
+				<h1>Lesson {id} - Vocabulary</h1>
+				<p>No vocabulary found for this lesson.</p>
+			</div>
+		);
+	}
+
+	const currentCard = vocab[currentIndex];
+
+	return (
+		<div className={styles.container}>
+		<h2 className={styles.title}>Lesson {id} - Vocabulary</h2>
+		<div className={styles.flashcardContainer}>
+				<Flashcard
+					word={currentCard.word}
+					definition={currentCard.definition}
+					isFlipped={isFlipped}
+					onFlip={() => setIsFlipped(prev => !prev)}
+				/>
+				<div className={styles.navButtons}>
+					<button onClick={handlePrev} className={styles.navBtn}>Prev</button>
+					<span className={styles.counter}>{currentIndex + 1} / {vocab.length}</span>
+					<button onClick={handleNext} className={styles.navBtn}>Next</button>
+				</div>
+			</div>
+		</div>
+	);
 }
