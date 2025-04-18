@@ -5,7 +5,6 @@ import styles from './page.module.css';
 import { useAuth } from '@/app/util/auth/AuthContext';
 import { useParams, useRouter } from 'next/navigation';
 import QuizStatus from '@/app/util/QuizStatus';
-import { loadUSEModel, getSimilarityScore } from '@/app/util/similarity';
 
 export default function QuizPage() {
     const { id } = useParams();
@@ -60,13 +59,6 @@ export default function QuizPage() {
         fetchQuestions();
     }, [user, loading, router, id]);
 
-    useEffect(() => {
-        loadUSEModel().then(() => {
-            console.log('USE model loaded in background');
-        });
-    }, []);
-
-
     if (loading || fetching) return <div className={styles.loading}>Loading...</div>;
     if (questions.length === 0) return <div>No questions found for this lesson.</div>;
     if (currentIndex >= questions.length) return <div className={styles.complete}>🎉 Quiz complete!</div>;
@@ -91,13 +83,10 @@ export default function QuizPage() {
         console.log("User Normalized: ", userNormalized);
         console.log("Answer Normalized: ", answerNormalized);
 
-        const similarity = await getSimilarityScore(userNormalized, answerNormalized);
-        const isAcceptable = similarity > 0.85;
+        const isAcceptable = userNormalized === answerNormalized;
 
         setIsCorrect(isAcceptable);
         setShowFeedback(true);
-
-        console.log('Similarity:', similarity);
 
         const difficulty_rating = isAcceptable ? "GOOD" : "AGAIN";
         const jwt = await user.getIdToken();
@@ -123,8 +112,6 @@ export default function QuizPage() {
         } catch (err) {
             console.error('Error submitting answer:', err);
         }
-
-        
 
         setTimeout(() => {
             setUserAnswer('');

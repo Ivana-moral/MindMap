@@ -79,14 +79,11 @@ def get_user_classes(user_id: str, db: Session = Depends(get_db), current_user: 
 #enroll a user in a class
 @router.post("/{user_id}/enroll")
 def enroll_in_class(user_id: str, class_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
-    # Check authorization
-    if current_user.user_id != user_id and current_user.role not in ["instructor", "admin"]:
-        raise HTTPException(status_code=403, detail="Not authorized to enroll this user")
-    
+
     # Validate user and class
     user = user_service.get_user_by_uid(db, user_id)
     if not user:
-        raise HTTPException(status_code=404, detail="Userrr not found")
+        raise HTTPException(status_code=404, detail="User not found")
     
     class_obj = db.query(Class).filter(Class.class_id == class_id).first()
     if not class_obj:

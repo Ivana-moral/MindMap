@@ -5,8 +5,8 @@ export default function Home() {
   return (
     <div className="center-container">
       <h1>Bienvenido al MindMap</h1>
-      <Link href= "/lessonexplorer">
-      	<Button text="See Lessons" />
+      <Link href= "/courses">
+      	<Button text="See Courses" />
       </Link>
     </div>
   );
