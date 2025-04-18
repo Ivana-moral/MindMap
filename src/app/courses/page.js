@@ -9,12 +9,12 @@ export default function LessonExplorer() {
     const router = useRouter();
 
     const goToLessonPage = (id) => {
-        router.push(`/lesson/${id}`);
+        router.push(`/course/${id}`);
     };
 
 	const { user, loading } = useAuth();
 
-	const [ lessons, setLessons ] = useState([]);
+	const [ classes, setClasses ] = useState([]);
 	const [ fetching, setFetching ] = useState(true);
 
 	useEffect(() => {
@@ -30,7 +30,7 @@ export default function LessonExplorer() {
 		async function fetchData() {
 			try {
 				const jwt = await user.getIdToken();
-				const res = await fetch(`http://127.0.0.1:8000/api/lessons`, {
+				const res = await fetch(`http://127.0.0.1:8000/api/users/${user.uid}/classes`, {
 					method: 'GET',
 					headers: {
 						'Content-Type': 'application/json',
@@ -44,16 +44,10 @@ export default function LessonExplorer() {
 
 				const data = await res.json();
 
-				console.log(data);
+				setClasses(data);
 
-				const formattedLessons = data.map(item => ({
-					lessonNumber: item.lesson_id,
-					lessonName: item.lesson_name
-				}))
-
-				setLessons(formattedLessons);
 			} catch(err) {
-				console.error('Failed to fetch lessons:', err);
+				console.error('Failed to fetch classes:', err);
 			} finally {
 				setFetching(false);
 			}
@@ -68,21 +62,19 @@ export default function LessonExplorer() {
 
     return (
         <div className={styles.container}>
-            <h2 className={styles.title}>Lesson Explorer</h2>
+            <h2 className={styles.title}>Course Explorer</h2>
             <hr className={styles.divider} />
 
-            <div className={styles.lessonList}>
-                {lessons.map((lesson, index) => (
+            <div className={styles.classList}>
+                {classes.map((classObj, index) => (
                     <div
-                        key={lesson.lessonNumber}
-                        className={styles.lessonCard}
-                        onClick={() => goToLessonPage(lesson.lessonNumber)}
+                        key={classObj.class_id}
+                        className={styles.classCard}
+                        onClick={() => goToLessonPage(classObj.class_id)}
                     >
-                        <span className={styles.lessonNumber}>{index + 1}</span>
+                        <span className={styles.classNumber}>{index + 1}</span>
                         <div>
-                            <span className={styles.lessonTitle}>{lesson.lessonName}</span>
-							{/*TODO: Replace Placeholder with something... */}
-                            <div className={styles.lessonSubtext}>placeholder</div>
+                            <span className={styles.classTitle}>{classObj.class_name}</span>
                         </div>
                     </div>
                 ))}

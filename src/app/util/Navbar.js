@@ -52,9 +52,8 @@ export default function Navbar() {
                 </button>
                 <ul>
                     <li onClick={() => { router.push('/account'); toggleMenu(); }}>Account</li>
-                    <li onClick={() => { router.push('/coursepage'); toggleMenu(); }}>Courses</li>
-                    <li onClick={() => { router.push('/instructorpage'); toggleMenu(); }}>Instructors</li>
-                    <li onClick={() => { router.push('/lessonexplorer'); toggleMenu(); }}>Lessons</li>
+                    <li onClick={() => { router.push('/courses'); toggleMenu(); }}>Courses</li>
+                    <li onClick={() => { router.push('/coursepage'); toggleMenu(); }}>Enroll</li>
                 </ul>
             </div>
         </>
