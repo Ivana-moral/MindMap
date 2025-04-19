@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from typing import List, Optional
 from app.db.database import get_db
 from app.db.models import User, Class
-from app.services import class_service
+from app.services import class_service, spaced_repetition
 from app.dependency import get_current_user
 
 router = APIRouter()
@@ -96,3 +96,28 @@ def get_class_lessons(
     
     lessons = class_service.get_class_lessons(db, class_id)
     return lessons
+
+@router.get("/{class_id}/lessons-with-progress")
+def get_class_lessons_progress(class_id: int, db:Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    class_obj = class_service.get_class_by_id(db, class_id)
+    if not class_obj:
+        raise HTTPException(status_code=404, detail="class not found")
+    
+    lessons = class_service.get_class_lessons(db, class_id)
+
+    result = []
+
+    for lesson in lessons:
+        progress = spaced_repetition.SpacedRepetitionService.get_lesson_progress_stats(db,current_user.user_id,lesson.lesson_id)
+        cut_progress = {
+            "percent_mastered": progress["percent_mastered"],
+            "percent_complete": progress["percent_complete"]
+        }
+        result.append({
+            "lesson_id": lesson.lesson_id,
+            "lesson_name": lesson.lesson_name,
+            "lesson_number": lesson.lesson_number,
+            "class_id": lesson.class_id,
+            "progress": cut_progress
+        })
+    return result

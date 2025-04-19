@@ -10,7 +10,7 @@ class SpacedRepetitionService:
     MIN_INTERVAL = 1  
     MAX_INTERVAL = 180  
     
-    # Ease factors for different performance levels
+    # Ease factors for different performance levels OBSOLETE
     EASE_FACTORS = {
         "AGAIN": 0.7,  # User got it wrong
         "HARD": 0.8,   # User struggled but got it right
