@@ -1,29 +1,92 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './page.module.css';
 import { useRouter } from 'next/navigation';
 import { FaUserCircle } from 'react-icons/fa';
+import { useAuth } from '@/app/util/auth/AuthContext';
 
 export default function CoursePage() {
     const router = useRouter();
 
-    // TODO: Fetch actual course data from backend
-    const [courses, setCourses] = useState([
-        { id: 1, name: 'Spanish 1' },
-        { id: 2, name: 'Business Spanish' },
-        { id: 3, name: 'Spanish Culture' }
-    ]);
+    const { user, loading } = useAuth();
 
+    const [courses, setCourses] = useState([]);
     const [courseCode, setCourseCode] = useState('');
+    const [fetching, setFetching] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        if(loading) {
+            return;
+        }
+
+        if(!user) {
+            router.replace('/login');
+            return;
+        }
+
+        async function fetchCourses() {
+            try {
+                const jwt = await user.getIdToken();
+
+                const res = await fetch(`http://127.0.0.1:8000/api/users/${user.uid}/classes`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${jwt}`
+                    }
+                });
+
+                if(!res.ok) {
+                    throw new Error('Failed to fetch classes');
+                }
+
+                const data = await res.json();
+
+                setCourses(data);
+            } catch (err) {
+                console.error('Error fetching classes: ', err)
+            } finally {
+                setFetching(false);
+            }
+        }
+
+        if(fetching) {
+            fetchCourses();
+        }
+        
+    }, [user, loading, fetching]);
 
     const handleInputChange = (e) => {
         setCourseCode(e.target.value);
     };
 
-    const handleAddCourse = () => {
-        console.log('Adding course:', courseCode);
+    const handleAddCourse = async (e) => {
+        e.preventDefault();
+
+        const jwt = await user.getIdToken();
+        console.log(jwt);
+        console.log(user.uid);
+
+        try {
+            const res = await fetch(`http://127.0.0.1:8000/api/users/${user.uid}/enroll?class_id=${courseCode}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${jwt}`
+                }
+            });
+
+            if(!res.ok) {
+                throw new Error('Failed to enroll in class.');
+            }
+        } catch (err) {
+            setError(err);
+        }
+
         setCourseCode('');
+        setFetching(true);
     };
 
     return (
@@ -44,8 +107,8 @@ export default function CoursePage() {
             <div className={styles.courseContainer}>
                 <div className={styles.courseList}>
                     {courses.map((course) => (
-                        <button key={course.id} className={styles.courseCard}>
-                            {course.name}
+                        <button key={course.class_id} className={styles.courseCard}>
+                            {course.class_name}
                         </button>
                     ))}
                 </div>
@@ -63,6 +126,7 @@ export default function CoursePage() {
                 <button className={styles.addButton} onClick={handleAddCourse}>
                     Add Course
                 </button>
+                {error && <p>Could Not Find Course!</p>}
             </div>
         </div>
     );

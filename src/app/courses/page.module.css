@@ -1,0 +1,80 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+    min-height: 100vh;
+    background-color: var(--background);
+    color: var(--text);
+}
+
+.title {
+    font-size: var(--heading-size);
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: var(--text);
+    text-align: center;
+}
+
+.divider {
+    width: 80%;
+    height: 1px;
+    background-color: var(--text);
+    margin-bottom: 40px;
+}
+
+.classList {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    max-width: 600px;
+    padding: 0 16px;
+}
+
+.classCard {
+    background-color: var(--secondary);
+    border-radius: 12px;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.classCard:hover {
+    background-color: var(--hover);
+    transform: translateY(-4px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+}
+
+.classCard:active {
+    transform: scale(0.98);
+}
+
+.classNumber {
+    font-weight: 600;
+    color: var(--text);
+    font-size: 16px;
+    background-color: var(--accent);
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.classTitle {
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--text);
+}
+
+.classSubtext {
+    font-size: 14px;
+    color: var(--text-light);
+    margin-top: 4px;
+}

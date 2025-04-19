@@ -18,7 +18,7 @@ export default function QuizStatus({ progress, currentIndex, totalQuestions }) {
                     />
                 </div>
                 <span className={styles.progressText}>
-                    {((currentIndex) / totalQuestions) * 100}% Complete
+                    {Math.trunc(((currentIndex) / totalQuestions) * 100)}% Complete
                 </span>
             </div>
         </div>
