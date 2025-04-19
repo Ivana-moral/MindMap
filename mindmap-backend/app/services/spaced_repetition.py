@@ -379,7 +379,8 @@ class SpacedRepetitionService:
                     
                     full_text = re.sub(r'[\(\)]', '', material.grammar_structure_answer)
                     
-                    prompt = full_text.replace(answer, "___")
+                    prompt = ("Fill in the blank for: ") + material.grammar_structure_practice
+                    prompt += ("\n\n")+full_text.replace(answer, "_____")
                 else:
                     answer = material.grammar_structure_answer
                     prompt = material.grammar_structure_practice
