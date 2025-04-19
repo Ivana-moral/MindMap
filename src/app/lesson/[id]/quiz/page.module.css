@@ -22,6 +22,7 @@
     font-weight: 600;
     color: #333;
     color: var(--text);
+    white-space: pre-line
 }
 
 .form {

@@ -1,3 +1,4 @@
+import re
 from sqlalchemy.orm import Session
 from datetime import datetime, timedelta, date
 from app.db.models import UserMaterialData, Material, User, Lesson
@@ -9,7 +10,7 @@ class SpacedRepetitionService:
     MIN_INTERVAL = 1  
     MAX_INTERVAL = 180  
     
-    # Ease factors for different performance levels
+    # Ease factors for different performance levels OBSOLETE
     EASE_FACTORS = {
         "AGAIN": 0.7,  # User got it wrong
         "HARD": 0.8,   # User struggled but got it right
@@ -372,9 +373,21 @@ class SpacedRepetitionService:
                     "prompt": f"What is the meaning of: {material.vocabulary_word}?"
                 })
             elif material.type_of_material == "grammar":
+                if material.grammar_structure_answer and "(" in material.grammar_structure_answer:
+                    answer_match = re.search(r'\(([^)]+)\)', material.grammar_structure_answer)
+                    answer = answer_match.group(1) if answer_match else material.grammar_structure_answer
+                    
+                    full_text = re.sub(r'[\(\)]', '', material.grammar_structure_answer)
+                    
+                    prompt = ("Fill in the blank for: ") + material.grammar_structure_practice
+                    prompt += ("\n\n")+full_text.replace(answer, "_____")
+                else:
+                    answer = material.grammar_structure_answer
+                    prompt = material.grammar_structure_practice
+                
                 question.update({
-                    "prompt": material.grammar_structure_practice,
-                    "answer": material.grammar_structure_answer,
+                    "prompt": prompt,
+                    "answer": answer,
                     "grammar_type": getattr(material, "grammar_type", None)
                 })
                 
@@ -382,7 +395,7 @@ class SpacedRepetitionService:
                 question["current_understanding"] = item["estimated_current_understanding"]
                 
             quiz_questions.append(question)
-            
+                
         return quiz_questions
     
     @staticmethod
