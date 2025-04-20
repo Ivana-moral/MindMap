@@ -32,7 +32,7 @@ export default function LessonExplorer() {
 		async function fetchData() {
 			try {
 				const jwt = await user.getIdToken();
-				const res = await fetch(`http://127.0.0.1:8000/api/classes/classes/${id}/lessons`, {
+				const res = await fetch(`http://127.0.0.1:8000/api/classes/${id}/lessons-with-progress`, {
 					method: 'GET',
 					headers: {
 						'Content-Type': 'application/json',
@@ -50,7 +50,8 @@ export default function LessonExplorer() {
 
 				const formattedLessons = data.map(item => ({
 					lessonNumber: item.lesson_id,
-					lessonName: item.lesson_name
+					lessonName: item.lesson_name,
+					lessonProgress: item.progress.percent_mastered
 				}))
 
 				setLessons(formattedLessons);
@@ -83,8 +84,7 @@ export default function LessonExplorer() {
                         <span className={styles.lessonNumber}>{index + 1}</span>
                         <div>
                             <span className={styles.lessonTitle}>{lesson.lessonName}</span>
-							{/*TODO: Replace with actual lesson progress*/}
-                            <div className={styles.lessonSubtext}>Lesson Progress: 0%</div>
+                            <div className={styles.lessonSubtext}>Lesson Mastery: {Math.trunc(lesson.lessonProgress)}%</div>
                         </div>
                     </div>
                 ))}
