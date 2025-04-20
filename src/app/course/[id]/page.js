@@ -84,7 +84,6 @@ export default function LessonExplorer() {
                         <span className={styles.lessonNumber}>{index + 1}</span>
                         <div>
                             <span className={styles.lessonTitle}>{lesson.lessonName}</span>
-							{/*TODO: Replace with actual lesson progress*/}
                             <div className={styles.lessonSubtext}>Lesson Mastery: {Math.trunc(lesson.lessonProgress)}%</div>
                         </div>
                     </div>
