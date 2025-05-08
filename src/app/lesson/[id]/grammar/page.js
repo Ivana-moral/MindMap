@@ -20,7 +20,7 @@ export default function GrammarPage() {
         const fetchGrammar = async () => {
             try {
                 const jwt = await user.getIdToken();
-                const res = await fetch(`http://127.0.0.1:8000/api/lessons/${id}/grammar`, {
+                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/lessons/${id}/grammar`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',

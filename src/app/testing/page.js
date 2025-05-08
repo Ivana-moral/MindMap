@@ -9,7 +9,7 @@ export default function testing() {
   return (
     <>
       <Button text={'FETCH DATA'} onClick={() => {
-        fetch('http://127.0.0.1:8000/api/users', {
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -22,7 +22,7 @@ export default function testing() {
       }}/>
 
       <Button text={'LOGIN'} onClick={() => {
-        fetch('http://127.0.0.1:8000/login?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiIzIiwiZW1haWwiOiJ0ZXNAZXhhbXBsZS5jb20iLCJ0ZXN0X3Rva2VuIjp0cnVlLCJleHAiOjE3NDMzNjM0NTd9.PaqyKqEvgrccX6M--x2NYKGuoNqJZXUXkMuxMs-FcqA', {
+        fetch('${process.env.NEXT_PUBLIC_API_URL}/login?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiIzIiwiZW1haWwiOiJ0ZXNAZXhhbXBsZS5jb20iLCJ0ZXN0X3Rva2VuIjp0cnVlLCJleHAiOjE3NDMzNjM0NTd9.PaqyKqEvgrccX6M--x2NYKGuoNqJZXUXkMuxMs-FcqA', {
           method: 'POST'
         })
         .then(res => res.json())

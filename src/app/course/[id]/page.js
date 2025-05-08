@@ -32,7 +32,7 @@ export default function LessonExplorer() {
 		async function fetchData() {
 			try {
 				const jwt = await user.getIdToken();
-				const res = await fetch(`http://127.0.0.1:8000/api/classes/${id}/lessons-with-progress`, {
+				const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/classes/${id}/lessons-with-progress`, {
 					method: 'GET',
 					headers: {
 						'Content-Type': 'application/json',

@@ -32,7 +32,7 @@ export default function QuizPage() {
         async function fetchQuestions() {
             try {
                 const jwt = await user.getIdToken();
-                const res = await fetch(`http://127.0.0.1:8000/api/quiz/lessons/${id}/quiz?quiz_size=20`, {
+                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/quiz/lessons/${id}/quiz?quiz_size=20`, {
                     method: 'GET',
 					headers: {
 						'Content-Type': 'application/json',
@@ -92,7 +92,7 @@ export default function QuizPage() {
         const jwt = await user.getIdToken();
         
         try {
-            const res = await fetch('http://127.0.0.1:8000/api/quiz/submit-answer', {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/quiz/submit-answer`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
