@@ -32,7 +32,7 @@ export default function LoginForm() {
 				//TODO: change popup language based on system preferences
 				const result = await signInWithPopup(auth, provider);
 				const jwt = await result.user.getIdToken();
-				fetch(`http://127.0.0.1:8000/login?token=${jwt}`, {
+				fetch(`${process.env.NEXT_PUBLIC_API_URL}/login?token=${jwt}`, {
 					method: 'POST'
 				});
 			} catch (err) {
