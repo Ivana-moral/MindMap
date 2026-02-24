@@ -66,5 +66,7 @@ DATABASE
   6. When 'succefull connection' appear, go click "SAVE CONNECTION"
   7. Congradulation you finish  
 
+here is a video to follow: https://youtu.be/VjON3LbFtLs
+
 # How do I contribute?
 TODO
