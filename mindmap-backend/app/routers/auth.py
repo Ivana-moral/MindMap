@@ -5,6 +5,7 @@ from app.db.database import get_db
 from app.db.models import User
 from app.services import user_service
 from app.auth import verify_firebase_token, create_test_id_token
+from firebase_admin import auth as firebase_auth
 import jwt
 import time
 from datetime import datetime, timedelta
@@ -27,11 +28,19 @@ def login(token: str, db: Session = Depends(get_db)):
         # Update last login
         user_service.update_last_login(db, user.user_id)
     
+    # Set the role as a Firebase custom claim
+    try: 
+        firebase_auth.set_custom_user_claims(firebase_uid,{'role':user.role})
+        print(f"Set custom claim for {firebase_uid}: role={user.role}")
+    except Exception as e:
+        print(f"Error setting custom claims: {e}")
+
     return {
         "message": "User logged in",
         "user_id": user.user_id,
         "username": user.username,
-        "email": user.email
+        "email": user.email,
+        "role": user.role
     }
 
 #Generate test token for development mode

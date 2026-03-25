@@ -42,6 +42,7 @@ next-env.d.ts
 
 #Python Virtual Env
 **/venv/
+.venv/
 
 # Firebase Credentials
 **/mindmap-credentials.json

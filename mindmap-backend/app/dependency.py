@@ -1,6 +1,6 @@
 import os
 import jwt
-from fastapi import Depends, HTTPException
+from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from sqlalchemy.orm import Session
 from app.db.database import get_db
@@ -43,3 +43,25 @@ def get_current_user(
     
     except Exception as e:
         raise HTTPException(status_code=401, detail=f"Authentication failed: {str(e)}")
+
+def get_current_user_role (credentials: HTTPAuthorizationCredentials = Depends(security)):
+    try:
+        decoded_token = verify_firebase_token(credentials.credentials)
+        user_role = decoded_token.get("role")
+        return user_role
+    except Exception:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="invalid authenticaion credentials",
+            headers={"WWW-Authenticate": "Bearer"},
+            )
+
+def role_required(required_role: str):
+    def role_checker(user_role: str = Depends(get_current_user_role)):
+        if user_role != required_role:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail=f"User does not have the {required_role} role"
+            )
+        return user_role
+    return role_checker
