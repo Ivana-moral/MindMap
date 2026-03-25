@@ -1,11 +1,11 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from typing import Optional
 from app.db.database import get_db
 from app.db.models import User, InscribedStudents, Class
 from app.services import user_service
 from app.auth import verify_firebase_token
-from app.dependency import get_current_user
+from app.dependency import get_current_user, role_required
 
 router = APIRouter()
 
@@ -37,6 +37,10 @@ def get_user(user_id: str, db: Session = Depends(get_db), current_user: User = D
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
     return user
+
+@router.get("/User_role")
+def instructor_endpoint(role: str = Depends(role_required("instructor"))):
+    return{"message":"teacher is here"}
 
 #update user profile, non admins may only update their own profile, and only admins may change roles
 @router.put("/{user_id}")
