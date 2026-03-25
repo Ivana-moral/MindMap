@@ -70,3 +70,8 @@ def create_test_id_token(user_id: str, email: str):
     token = jwt.encode(payload, secret, algorithm="HS256")
     
     return token
+
+# Verify the user role 
+def set_user_role(uid,role):
+    custom_claims = {"role":role}
+    auth.set_custom_user_claims(uid,custom_claims)
