@@ -1,6 +1,6 @@
 # app/main.py
 from fastapi import FastAPI
-from app.routers import user, lesson, auth, quiz, classes
+from app.routers import user, lesson, auth, quiz, classes,report
 from app.db.models import Base
 from app.db.database import engine
 from fastapi.middleware.cors import CORSMiddleware
@@ -25,3 +25,4 @@ app.include_router(user.router, prefix="/api/users", tags=["Users"])
 app.include_router(lesson.router, prefix="/api", tags=["Lessons"])
 app.include_router(quiz.router, prefix="/api/quiz", tags=["Quiz"])
 app.include_router(classes.router, prefix="/api/classes", tags=["Classes"])
+app.include_router(report.router, prefix="/api/report", tags=["Report"])
