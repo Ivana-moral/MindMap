@@ -47,3 +47,9 @@ def get_class_students(db: Session, class_id: int):
 
 def get_class_lessons(db: Session, class_id: int):
     return db.query(Lesson).filter(Lesson.class_id == class_id).all()
+
+def get_students_by_class (db: Session, class_id: int):
+    return db.query(User).join(
+        InscribedStudents,
+        User.user_id == InscribedStudents.user_id 
+    ).filter(User.role == "student").filter(InscribedStudents.class_id == class_id).all()
