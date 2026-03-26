@@ -7,7 +7,7 @@ import { useAuth } from '@/app/util/auth/AuthContext';
 import { useRouter } from 'next/navigation';
 
 export default function Account() {
-	const { user, loading, signOut } = useAuth();
+	const { user, loading, signOut, userRole} = useAuth();
 	const router = useRouter();
 
 	useEffect(() => {
@@ -34,6 +34,9 @@ export default function Account() {
                 <div className={styles.accountIcon}>
                     {firstName?.charAt(0).toUpperCase()}
                 </div>
+
+                {/* User role */}
+                <div>{userRole || 'Student'}</div>
 
                 {/* Line */}
                 <div className={styles.divider}></div>
