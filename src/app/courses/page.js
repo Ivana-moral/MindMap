@@ -5,17 +5,22 @@ import { useAuth } from '@/app/util/auth/AuthContext';
 import { useEffect, useState } from 'react';
 import styles from './page.module.css';
 
-export default function LessonExplorer() {
+export default function CourseExplorer() {
     const router = useRouter();
-
-    const goToLessonPage = (id) => {
-        router.push(`/course/${id}`);
-    };
-
 	const { user, loading } = useAuth();
-
 	const [ classes, setClasses ] = useState([]);
 	const [ fetching, setFetching ] = useState(true);
+
+	const goToLessonPage = (id) => {
+        if(sessionStorage.getItem('role').toUpperCase === 'INSTRUCTOR'){
+			//router.push(`/course/${id}`);
+			router.push(`/report/${id}`);
+		}
+		else{
+			router.push(`/course/${id}`);
+		}
+		
+    };
 
 	useEffect(() => {
 		if(loading) {
