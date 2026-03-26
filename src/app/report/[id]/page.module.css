@@ -1,0 +1,33 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+    min-height: 100vh;
+    background-color: var(--background);
+    color: var(--text);
+}
+
+.title {
+    font-size: var(--heading-size);
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: var(--text);
+    text-align: center;
+}
+
+.divider {
+    width: 80%;
+    height: 1px;
+    background-color: var(--text);
+    margin-bottom: 40px;
+}
+
+.customTable :global(.p-datatable-thead > tr > th) {
+    background-color: #f0f9ff; /* Light blue header */
+    color: #007bff;
+}
+
+.customTable :global(.p-datatable-tbody > tr:hover) {
+    background-color: #e0e7ff !important; /* Indigo on hover */
+}
