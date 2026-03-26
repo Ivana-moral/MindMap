@@ -12,6 +12,7 @@ import { useAuth } from '@/app/util/auth/AuthContext';
 export default function LoginForm() {
 		const { user, loading } = useAuth();
 		const [ error, setError ] = useState(null);
+		const [ loginUser, setLogin] = useState(null);
 		const router = useRouter();
 
 		useEffect(() => {
@@ -31,6 +32,7 @@ export default function LoginForm() {
 			try {
 				//TODO: change popup language based on system preferences
 				const result = await signInWithPopup(auth, provider);
+				setLogin(result);
 				const jwt = await result.user.getIdToken();
 				fetch(`${process.env.NEXT_PUBLIC_API_URL}/login?token=${jwt}`, {
 					method: 'POST'
@@ -40,6 +42,8 @@ export default function LoginForm() {
 				setError(`${err.code}: ${err.message}`);
 			}
 		}
+
+		console.log(loginUser);
 
 		if(loading) {
 			return <div>Loading...</div>
