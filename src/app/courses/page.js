@@ -12,7 +12,8 @@ export default function CourseExplorer() {
 	const [ fetching, setFetching ] = useState(true);
 
 	const goToLessonPage = (id) => {
-        if(sessionStorage.getItem('role').toUpperCase === 'INSTRUCTOR'){
+		//alert(sessionStorage.getItem('role').toUpperCase());
+        if(sessionStorage.getItem('role').toUpperCase() === 'INSTRUCTOR'){
 			//router.push(`/course/${id}`);
 			router.push(`/report/${id}`);
 		}

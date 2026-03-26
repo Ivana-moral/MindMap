@@ -1,3 +1,17 @@
 {
-    "python-envs.defaultEnvManager": "ms-python.python:system"
+    "python-envs.defaultEnvManager": "ms-python.python:system",
+    "sqltools.connections": [
+        {
+            "mysqlOptions": {
+                "authProtocol": "default",
+                "enableSsl": "Disabled"
+            },
+            "ssh": "Disabled",
+            "previewLimit": 50,
+            "server": "localhost",
+            "driver": "MySQL",
+            "name": "MindMap_1",
+            "connectString": "mysql+pymysql://admin:6Fk7XqsaKpcQ6O9LKlGY@mindmap.cwx6mewoecpy.us-east-1.rds.amazonaws.com:3306/mindmap"
+        }
+    ]
 }
