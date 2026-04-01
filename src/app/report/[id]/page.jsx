@@ -143,11 +143,11 @@ export default function ReportExplorer() {
 	const renderHeader = () => {
         return (
 			<div>
-				<div className='flex flex-wrap justify-content-end gap-2'>
-					<Button icon="pi pi-check" label="Expand All" onClick={expandAll} size="Large" text/>
-            		<Button icon="pi pi-minus" label="Collapse All" onClick={collapseAll} text />
+				<div style={{display: 'flex', justifyContent: 'flex-end', marginBottom: '1rem', gap: '.5rem'}}>
+					<Button icon="pi pi-check" label="Expand All" onClick={expandAll} size="Large" text style={{border:'3px solid lightgray', alignItems: 'center', display: 'flex', justifyContent: 'center'}} />
+            		<Button icon="pi pi-minus" label="Collapse All" onClick={collapseAll} text style={{border:'3px solid lightgray', alignItems: 'center', display: 'flex', justifyContent: 'center'}} />
 				</div>
-            	<div className="flex justify-content-end">
+            	<div>
 					<IconField iconPosition="left">
                     	<InputIcon className="pi pi-search" />
                     	<InputText value={globalFilterValue} onChange={onGlobalFilterChange} placeholder="Keyword Search" />
@@ -172,9 +172,9 @@ export default function ReportExplorer() {
 			<Toast ref={toast} />
 			<DataTable value={students} stripedRows filters={filters} filterDisplay="row" expandedRows={expandedRows} 
 				onRowToggle={(e)=> setExpandedRows(e.data)} onRowExpand={onRowExpand} onRowCollapse={onRowCollapse} 
-				rowExpansionTemplate={rowExpansionTemplate}	dataKey="username" header={header} 
-			globalFilterFields={['user_id', 'username', 'user_role']} loading={loading} tableStyle={{minWidth:'70rem'}} 
-			emptyMessage="No Students found">
+				rowExpansionTemplate={rowExpansionTemplate}	dataKey="user_id" header={header} 
+				globalFilterFields={['user_id', 'username', 'user_role']} loading={loading} tableStyle={{minWidth:'70rem'}} 
+				emptyMessage="No Students found">
 				<Column expander={allowExpansion} style={{width: 'rem'}}/>
 				<Column field="user_id" header="UserID" filter sortable></Column>
 				<Column field="username" header="Name" filter sortable></Column>
