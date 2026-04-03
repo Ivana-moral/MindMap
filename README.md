@@ -11,7 +11,7 @@ Backend Setup
   3. '.venv\Scripts\activate' (its to run the virtual enviroment)
   4. if it give you an error use this command: 'Set-ExecutionPolicy RemoteSigned -Scope Process' and go to step 3.
   5. if you see: '(venv)PS C:\Git\MindMap>' go to the next step
-  6. 'pip install -r requirements.txt' (in the (venv))
+  6. 'pip install -r requirements.txt' (in the (venv) and have to install outside the backend)
   7. 'pip install fastapi uvicorn' and 'pip install SQLalchemy'
   8. create a file '.env' and inside the file write (NOTE: you need to create a firebase account and get added to the firebase MindMapauth project so you can complete this step, and no spaces):
 
