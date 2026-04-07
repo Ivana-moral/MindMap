@@ -34,7 +34,9 @@ def verify_firebase_token(token: str):
         decoded_token = auth.verify_id_token(token)
         firebase_uid = decoded_token["uid"]
         email = decoded_token["email"]
-        return firebase_uid, email
+        display_name = decoded_token["name"]
+        return firebase_uid, email, display_name
+    
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Invalid token: {str(e)}")
 
