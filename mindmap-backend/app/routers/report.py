@@ -45,6 +45,7 @@ def get_class_students(
             "username" : student.username,
             "user_role" : student.role,
             "user_email" : student.email,
+            "display_name": student.display_name,
             "lessons": lesson_stat
         })           
 

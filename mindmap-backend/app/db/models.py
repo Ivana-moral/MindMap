@@ -14,6 +14,7 @@ class User(Base):
     date_created = Column(Date, default=datetime.utcnow)
     last_login = Column(Date)
     role = Column(String(50))
+    display_name = Column(String(255))
     
     # Relationships
     lesson_logs = relationship("LessonLog", back_populates="user")

@@ -16,21 +16,21 @@ router = APIRouter()
 @router.post("/login")
 def login(token: str, db: Session = Depends(get_db)):
     # Verify the Firebase ID token and get user data
-    firebase_uid, email = verify_firebase_token(token)
+    firebase_uid, email, display_name = verify_firebase_token(token)
     
     # Check if user exists in database
     user = user_service.get_user_by_uid(db, firebase_uid)
     
     if not user:
         # Create a new user if they don't exist
-        user = user_service.create_user(db, firebase_uid, email)
+        user = user_service.create_user(db, firebase_uid, email, display_name=display_name)
     else:
         # Update last login
         user_service.update_last_login(db, user.user_id)
     
     # Set the role as a Firebase custom claim
     try: 
-        firebase_auth.set_custom_user_claims(firebase_uid,{'role':user.role})
+        firebase_auth.set_custom_user_claims(firebase_uid, {'role':user.role})
         print(f"Set custom claim for {firebase_uid}: role={user.role}")
     except Exception as e:
         print(f"Error setting custom claims: {e}")

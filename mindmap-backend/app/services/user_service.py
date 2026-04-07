@@ -6,7 +6,7 @@ import datetime
 def get_user_by_uid(db: Session, firebase_uid: str):
     return db.query(User).filter(User.user_id == firebase_uid).first()
 
-def create_user(db: Session, firebase_uid: str, email: str, username: str = None, role: str = "student"):
+def create_user(db: Session, firebase_uid: str, email: str, username: str = None, role: str = "student", display_name: str = None):
     base_username = username or email.split('@')[0]
     
     username_attempt = base_username
@@ -25,7 +25,8 @@ def create_user(db: Session, firebase_uid: str, email: str, username: str = None
         username=username_attempt,
         date_created=datetime.date.today(),
         last_login=datetime.date.today(),
-        role=role
+        role=role,
+        display_name=display_name
     )
     db.add(user)
     db.commit()

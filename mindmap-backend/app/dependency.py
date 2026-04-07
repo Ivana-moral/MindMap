@@ -15,7 +15,7 @@ def get_current_user(
     db: Session = Depends(get_db)
 ):
     try:
-        user_id, email = verify_firebase_token(credentials.credentials)
+        user_id, email, display_name = verify_firebase_token(credentials.credentials)
         
         user = user_service.get_user_by_uid(db, user_id)
 
@@ -27,13 +27,13 @@ def get_current_user(
                 print(f"Creating test user with id={user_id}, email={email}")
                 try:
                     if 'admin' in user_id:
-                        user = user_service.create_user(db, user_id, email, role="admin")
+                        user = user_service.create_user(db, user_id, email, role="admin", display_name=display_name)
                         print(f"Created admin user: {user.user_id} with role {user.role}")
                     elif 'instructor' in user_id:
-                        user = user_service.create_user(db, user_id, email, role="instructor")
+                        user = user_service.create_user(db, user_id, email, role="instructor", display_name=display_name)
                         print(f"Created instructor user: {user.user_id}")
                     else:
-                        user = user_service.create_user(db, user_id, email, role="student")
+                        user = user_service.create_user(db, user_id, email, role="student", display_name=display_name)
                         print(f"Created student user: {user.user_id}")
                 except Exception as e:
                     print(f"Error creating user: {str(e)}")
@@ -57,7 +57,7 @@ def get_current_user_role (credentials: HTTPAuthorizationCredentials = Depends(s
             )
 
 def role_required(required_role: str):
-    def role_checker(user_role: str = Depends(get_current_user_role)):
+    def role_checker(user_role:str = Depends(get_current_user_role)):
         if user_role != required_role:
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
