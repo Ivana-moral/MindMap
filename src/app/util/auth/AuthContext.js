@@ -20,7 +20,7 @@ const AuthContext = createContext({
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [userRole, setUserRole] = useState (null);
+  const [userRole, setUserRole] = useState(null);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async(firebaseUser) => {
@@ -36,7 +36,7 @@ export const AuthProvider = ({ children }) => {
           sessionStorage.setItem('role', role);
           console.log('[AuthContext] Role from claims:', role);
         } catch (err) {
-          console.error('[AuthContext] Error getting role:', role);
+          console.error('[AuthContext] Error getting role:', err);
           setUserRole(null);
         }
       } else {
@@ -57,7 +57,7 @@ export const AuthProvider = ({ children }) => {
 };
 
   return (
-    <AuthContext.Provider value={{ user, loading, signOut,userRole }}>
+    <AuthContext.Provider value={{ user, loading, signOut, userRole }}>
       {children}
     </AuthContext.Provider>
   );

@@ -32,7 +32,8 @@ export default function ReportExplorer() {
 		user_email: { value: null, matchMode: FilterMatchMode.CONTAINS  },
 		user_role: {value: null, matchMode: FilterMatchMode.CONTAINS },
 		username: {value: null, matchMode: FilterMatchMode.CONTAINS },
-		user_id: {value: null, matchMode: FilterMatchMode.CONTAINS }
+		user_id: {value: null, matchMode: FilterMatchMode.CONTAINS },
+		display_name: {value: null, matchMode: FilterMatchMode.CONTAINS }
 	});
 	const [globalFilterValue, setGlobalFilterValue] = useState(''); //Filters 
 	const [expandedRows, setExpandedRows] = useState(null); //Expanded Rows for Lessons
@@ -144,13 +145,13 @@ export default function ReportExplorer() {
         return (
 			<div>
 				<div style={{display: 'flex', justifyContent: 'flex-end', marginBottom: '1rem', gap: '.5rem'}}>
-					<Button icon="pi pi-check" label="Expand All" onClick={expandAll} size="Large" text style={{border:'3px solid lightgray', alignItems: 'center', display: 'flex', justifyContent: 'center'}} />
-            		<Button icon="pi pi-minus" label="Collapse All" onClick={collapseAll} text style={{border:'3px solid lightgray', alignItems: 'center', display: 'flex', justifyContent: 'center'}} />
+					<Button icon="pi pi-check" label="Expand All" onClick={expandAll} size="Large" text style={{border:'3px solid lightgray', alignItems: 'center', display: 'flex', justifyContent: 'center'}}/>
+            		<Button icon="pi pi-minus" label="Collapse All" onClick={collapseAll} text style={{border:'3px solid lightgray', alignItems: 'center', display: 'flex', justifyContent: 'center'}}/>
 				</div>
             	<div>
 					<IconField iconPosition="left">
                     	<InputIcon className="pi pi-search" />
-                    	<InputText value={globalFilterValue} onChange={onGlobalFilterChange} placeholder="Keyword Search" />
+                    	<InputText value={globalFilterValue} onChange={onGlobalFilterChange} placeholder="Keyword Search"/>
 					
                 	</IconField>
             	</div>
@@ -173,11 +174,12 @@ export default function ReportExplorer() {
 			<DataTable value={students} stripedRows filters={filters} filterDisplay="row" expandedRows={expandedRows} 
 				onRowToggle={(e)=> setExpandedRows(e.data)} onRowExpand={onRowExpand} onRowCollapse={onRowCollapse} 
 				rowExpansionTemplate={rowExpansionTemplate}	dataKey="user_id" header={header} 
-				globalFilterFields={['user_id', 'username', 'user_role']} loading={loading} tableStyle={{minWidth:'70rem'}} 
+				globalFilterFields={['user_id', 'username', 'user_role', 'display_name']} loading={loading} tableStyle={{minWidth:'70rem'}} 
 				emptyMessage="No Students found">
 				<Column expander={allowExpansion} style={{width: 'rem'}}/>
-				<Column field="user_id" header="UserID" filter sortable></Column>
-				<Column field="username" header="Name" filter sortable></Column>
+				<Column field="user_id" header="UserID" filter sortable hidden={true}></Column>
+				<Column field="username" header="User Name" filter sortable></Column>
+				<Column field="display_name" header="Name" filter sortable></Column>
 				<Column field="user_role" header="Role" filter sortable></Column>	
 			</DataTable>
             
